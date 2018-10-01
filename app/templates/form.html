@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>OpenCCG Webinterface</title>
+    </head>
+    <body>
+        OpenCCG Webinterface
+        <form action="/" method="POST">
+            <input type="text" name="sentence" value="{{ sentence or '' }}" style="width: 300px" />
+            <input type="submit" value="Go!" />
+        </form>
+{% if response %}
+        <div>
+            <pre>
+{{ response }}
+            </pre>
+        </div>
+{% endif %}
+    </body>
+</html>
