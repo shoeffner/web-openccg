@@ -32,10 +32,10 @@ The response is a JSON object and contains four fields:
 Thus, an example response for the sentence "The yellow robot under the table." is:
 
 ```json
-{'sentence': 'the yellow robot under the table',
- 'number': 1,
- 'parses': {'np': '(@w2:slm-Robot(slm-Robot ^ <det>the ^ <ident>specific ^ <quant>singular) ^ @x2:gs-SpatialLocating( <gs-locatum>w2:slm-Robot ^ <gs-placement>(x1:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w3:gs-UnderProjectionExternal ^ slm-Under) ^ <gs-relatum>(w5:slm-Table ^ slm-Table ^ <det>the ^ <ident>specific ^ <quant>singular))) ^ @x3:gum-ColorPropertyAscription( <concrete>true ^ <domain>w2:slm-Robot ^ <range>(w1:slm-Yellow ^ yellow ^ <concrete>true)))'},
- 'http_status': 200}
+{"sentence": "the yellow robot under the table",
+ "number": 1,
+ "parses": {"np": "(@w2:slm-Robot(slm-Robot ^ <det>the ^ <ident>specific ^ <quant>singular) ^ @x2:gs-SpatialLocating( <gs-locatum>w2:slm-Robot ^ <gs-placement>(x1:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w3:gs-UnderProjectionExternal ^ slm-Under) ^ <gs-relatum>(w5:slm-Table ^ slm-Table ^ <det>the ^ <ident>specific ^ <quant>singular))) ^ @x3:gum-ColorPropertyAscription( <concrete>true ^ <domain>w2:slm-Robot ^ <range>(w1:slm-Yellow ^ yellow ^ <concrete>true)))"},
+ "http_status": 200}
 ```
 
 
