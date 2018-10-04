@@ -1,3 +1,4 @@
+import itertools
 import re
 import string
 import subprocess
@@ -28,6 +29,45 @@ def parse(sentence):
     response = wccg_proc.communicate(input=sentence)[0]
     return _as_dict(response or f'"{sentence}": Unable to parse. wccg returned an empty response.')
 
+
+def ensure_unique_key(new_key, dictionary):
+    """If new_key is already in dictionary, a number is appended to new_key.
+
+    If new_key is 'main' and 'main' is already in dictionary, the following keys
+    are tried until one is not part of dictionary:
+
+        main/0
+        main/1
+        main/2
+        ...
+        main/10
+        main/11
+        ...
+
+
+    Args:
+        new_key: The key to be added or modified.
+        dictionary: The dictionary to check new_key against.
+    Returns:
+        new_key if the key is unique, otherwise an alternative version.
+
+    >>> keys = ['a', 'a/0', 'a/1', 'a/2', 'a/3']
+    >>> ensure_unique_key('a', keys)
+    'a/4'
+    >>> ensure_unique_key('b', keys)
+    'b'
+    >>> ensure_unique_key('a/1', keys)
+    'a/1/0'
+    """
+    if new_key not in dictionary:
+        return new_key
+
+    for i in itertools.count():
+        key = f'{new_key}/{i}'
+        if key not in dictionary:
+            return key
+
+
 def _as_dict(response):
     """Converts the response to JSON so it's easier to parse for other
     programs."""
@@ -43,7 +83,7 @@ def _as_dict(response):
     key = None
     for line in lines[2:]:
         if line.startswith('Parse'):
-            key = line.split(':')[1].strip()
+            key = ensure_unique_key(line.split(':')[1].strip(), parses.keys())
             parses[key] = []
         elif line:
             parses[key].append(line.strip())
