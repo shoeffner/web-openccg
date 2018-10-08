@@ -1,4 +1,5 @@
 import json
+import uuid
 
 from flask import Flask, render_template, request, redirect
 
@@ -22,12 +23,25 @@ def is_non_gui_agent(ua_string):
     return any(ua in ua_string for ua in uas)
 
 
+def create_response(sentence):
+    content = wccg.parse(sentence)
+
+    response = {
+        'version': '1.0.0',
+        'application': 'web-openccg',
+        'uuid': str(uuid.uuid4())
+    }
+    response.update(content)
+
+    return response
+
+
 @app.route('/gui', methods=['GET', 'POST'])
 def gui():
     """Presents a simple input form to a browser user.
     """
     sentence = request.form.get('sentence')
-    response = wccg.parse(sentence)
+    response = create_response(sentence)
     response = json.dumps(response, indent=4)
     return render_template('form.html', sentence=sentence, response=response)
 
@@ -59,7 +73,7 @@ def index():
         # The first key could be send e.g. by
         #     curl --data "This is the sentence." 127.0.0.1:5000
         sentence = request.form.get(key) or key
-        response = wccg.parse(sentence)
+        response = create_response(sentence)
         return json.dumps(response), response['http_status']
 
     return redirect('/gui', code=307)

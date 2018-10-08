@@ -92,6 +92,5 @@ def _as_dict(response):
         parses[key] = ' '.join(parse)
 
     return dict(sentence=sentence[1:-1],
-                number=num_parses,
                 parses=parses,
                 http_status=200)
