@@ -3,6 +3,8 @@ import re
 import string
 import subprocess
 
+from ccgparser import ccg_to_json
+
 
 def parse(sentence):
     """Parses a sentence using OpenCCG's command line tool wccg.
@@ -27,7 +29,11 @@ def parse(sentence):
                                  universal_newlines=True)
     sentence = re.sub(f'[{re.escape(string.punctuation)}]', '', sentence).lower()
     response = wccg_proc.communicate(input=sentence)[0]
-    return _as_dict(response or f'"{sentence}": Unable to parse. wccg returned an empty response.')
+
+    wccg_response = _as_dict(response or f'"{sentence}": Unable to parse. wccg returned an empty response.')
+    wccg_response = jsonify_parses(wccg_response)
+
+    return wccg_response
 
 
 def ensure_unique_key(new_key, dictionary):
@@ -94,3 +100,20 @@ def _as_dict(response):
     return dict(sentence=sentence[1:-1],
                 parses=parses,
                 http_status=200)
+
+
+def jsonify_parses(wccg_response):
+    """Converts the OpenCCG responses to proper JSON objects and adds them
+    to the supplied dictionary.
+
+    Args:
+        wccg_response: The dictionary as returned by _as_dict.
+    Returns:
+        A copy of the dictionary, additionally containing parses_json.
+    """
+    json_parses = {}
+    for key, parse in wccg_response.get('parses', {}).items():
+        json_parses[key] = ccg_to_json(parse)
+    copy = wccg_response.copy()
+    copy['json_parses'] = json_parses
+    return copy

@@ -23,7 +23,7 @@ RUN curl -o openccg-0.9.5.tgz https://datapacket.dl.sourceforge.net/project/open
 # Server software: python 3, nginx, uwsgi
     && apt-get update \
     && apt-get install -y python3 python3-pip nginx \
-    && pip3 install flask uwsgi \
+    && pip3 install flask uwsgi tatsu \
 # Configure nginx
     && ln -s /etc/nginx/sites-available/occg /etc/nginx/sites-enabled/occg \
     && rm /etc/nginx/sites-enabled/default

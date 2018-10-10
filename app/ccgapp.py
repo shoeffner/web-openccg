@@ -24,10 +24,20 @@ def is_non_gui_agent(ua_string):
 
 
 def create_response(sentence):
+    """Prepares a response.
+
+    Parses the sentence using wccg, then enriches the result with
+    some meta data.
+
+    Args:
+        sentence: The sentence to parse.
+    Returns:
+        The response as a dictionary.
+    """
     content = wccg.parse(sentence)
 
     response = {
-        'version': '1.0.0',
+        'version': '1.1.0',
         'application': 'web-openccg',
         'uuid': str(uuid.uuid4())
     }
