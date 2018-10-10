@@ -1,17 +1,17 @@
 # Web OpenCCG
 
-This repository builds a small nginx-webserver and python wrapper around OpenCCG using the GUM-space ontology, ready to run inside a docker container.
+This repository builds a small [nginx](https://nginx.org/)-webserver and python wrapper around [OpenCCG](http://openccg.sourceforge.net/) using the [GUM-space ontology](http://www.diaspace.uni-bremen.de/cgi-bin/twiki/view/DiaSpace/ReSources.html), ready to run inside a [docker](https://www.docker.com/) container.
 
 After an initial `docker-compose up`, the service can be queried using a simple POST request, e.g. using curl:
 
-    $ curl --data "The yellow robot under the table." localhost:8080
-    {"sentence": "the yellow robot under the table", "number": 1, "parses": {"np": "(@w2:slm-Robot(slm-Robot ^ <det>the ^ <ident>specific ^ <quant>singular) ^ @x2:gs-SpatialLocating( <gs-locatum>w2:slm-Robot ^ <gs-placement>(x1:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w3:gs-UnderProjectionExternal ^ slm-Under) ^ <gs-relatum>(w5:slm-Table ^ slm-Table ^ <det>the ^ <ident>specific ^ <quant>singular))) ^ @x3:gum-ColorPropertyAscription( <concrete>true ^ <domain>w2:slm-Robot ^ <range>(w1:slm-Yellow ^ yellow ^ <concrete>true)))"}}
+    $ curl --data "Take the cup." localhost
+    {"version": "1.1.0", "application": "web-openccg", "uuid": "5fbcbc0d-c75e-4278-aa85-37a745847ae8", "sentence": "take the cup", "parses": {"smain": "@x1:gum-OrientationChange( <mood>imp ^ <gs-direction>(x2:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular)) ^ <gum-processInConfiguration>(w0:slm-Moving ^ slm-Taking))", "smain/0": "@x1:gum-OrientationChange( <mood>imp ^ <gs-direction>(x2:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular)) ^ <gum-processInConfiguration>(w0:slm-Taking ^ slm-Taking))", "smain/.r": "@x1:gs-AffectingDirectedMotion( <mood>imperative ^ <gs-route>x2 ^ <gum-actee>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular) ^ <gum-processInConfiguration>(w0:slm-Moving ^ slm-Taking))", "smain/.r/0": "@x1:gs-AffectingDirectedMotion( <mood>imperative ^ <gs-route>x2 ^ <gum-actee>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular) ^ <gum-processInConfiguration>(w0:slm-Taking ^ slm-Taking))"}, "http_status": 200, "json_parses": {"smain": {"nominal": "x1:gum-OrientationChange", "roles": [{"type": "mood", "target": "imp"}, [{"type": "gs-direction", "target": {"variable": "x2:gs-GeneralizedLocation", "roles": {"type": "gs-hasSpatialModality", "target": {"variable": "w2:slm-Cup", "roles": [{"entity": "cup"}, {"type": "det", "target": "the"}, {"type": "ident", "target": "specific"}, {"type": "quant", "target": "singular"}]}}}}, {"type": "gum-processInConfiguration", "target": {"variable": "w0:slm-Moving", "roles": {"entity": "slm-Taking"}}}]]}, "smain/0": {"nominal": "x1:gum-OrientationChange", "roles": [{"type": "mood", "target": "imp"}, [{"type": "gs-direction", "target": {"variable": "x2:gs-GeneralizedLocation", "roles": {"type": "gs-hasSpatialModality", "target": {"variable": "w2:slm-Cup", "roles": [{"entity": "cup"}, {"type": "det", "target": "the"}, {"type": "ident", "target": "specific"}, {"type": "quant", "target": "singular"}]}}}}, {"type": "gum-processInConfiguration", "target": {"variable": "w0:slm-Taking", "roles": {"entity": "slm-Taking"}}}]]}, "smain/.r": {"nominal": "x1:gs-AffectingDirectedMotion", "roles": [{"type": "mood", "target": "imperative"}, [{"type": "gs-route", "target": "x2"}, [{"type": "gum-actee", "target": {"variable": "w2:slm-Cup", "roles": [{"entity": "cup"}, {"type": "det", "target": "the"}, {"type": "ident", "target": "specific"}, {"type": "quant", "target": "singular"}]}}, {"type": "gum-processInConfiguration", "target": {"variable": "w0:slm-Moving", "roles": {"entity": "slm-Taking"}}}]]]}, "smain/.r/0": {"nominal": "x1:gs-AffectingDirectedMotion", "roles": [{"type": "mood", "target": "imperative"}, [{"type": "gs-route", "target": "x2"}, [{"type": "gum-actee", "target": {"variable": "w2:slm-Cup", "roles": [{"entity": "cup"}, {"type": "det", "target": "the"}, {"type": "ident", "target": "specific"}, {"type": "quant", "target": "singular"}]}}, {"type": "gum-processInConfiguration", "target": {"variable": "w0:slm-Taking", "roles": {"entity": "slm-Taking"}}}]]]}}}
 
 Or, as an example, using Python [requests](http://docs.python-requests.org/en/master/):
 
 ```python
 import requests
-print(requests.post('http://localhost:8080', data={'sentence': 'The yellow robot under the table.'}).json())
+print(requests.post('http://localhost', data={'sentence': 'Take the cup.'}).json())
 ```
 
 Note that is is not production ready, as it is really slow and not optimized:
@@ -20,56 +20,284 @@ Instead of keeping one (or multiple) instances of OpenCCG running to query them 
 
 ## Usage
 
+### Querying
+
+To query the service visually, just open your browser at [http://localhost/gui](http://localhost/gui).
+Otherwise, use curl, wget, or e.g. python requests to query web-openccg via the command line or your application.
+
+If your client allows to build your request body manually, like curl, just put the sentence inside:
+
+    curl --data "Take the cup." localhost
+
+However, many high level frameworks like python requests usually use a
+key-value mechanism for post data. In this case, use the key `sentence`:
+
+    requests.post('http://localhost', data={'sentence': 'Take the cup.'})
+
+
 ### Response format
 
-The response is a JSON object and contains four fields:
+The response is a JSON object and always contains these fields:
 
-- `sentence`: The cleaned input sentence (all lowercase, punctuation removed, ...).
-- `number`: The number of possible parses as determined from OpenCCG.
-- `parses`: A dictionary of parse-identifiers (e.g. "np") to actual parses as OpenCCG outputs them.
+- `version`: The JSON object version.
+- `application`: Always "web-openccg", this is useful if you aggregate parses from different services.
+- `uuid`: A unique ID for this response. This will only be useful if you plan to integrate the tool somehow.
 - `http_status`: The HTTP status from the request.
 
-Thus, an example response for the sentence "The yellow robot under the table." is:
+If a sentence was provided during the request, these fields are present:
+
+- `sentence`: The cleaned input sentence (all lowercase, punctuation removed, ...).
+
+If at least one successful parse exists, the these fields are included:
+- `parses`: A dictionary of parse-identifiers (e.g. "np") to actual parses as OpenCCG outputs them.
+- `json_parses`: A version of the OpenCCG outputs in a flat JSON. This is produced via a custom grammer for [TatSu](https://github.com/neogeny/TatSu), with some post-processing to keep the JSON hierarchy flat (TatSu creates right-deep trees).
+
+*Note:* The keys are shared between `parses` and `json_parses`, thus you can easily lookup the original output for a JSON parse and vice-versa.
+
+If an error occurs, the error field is present:
+- `error`: An error description.
+
+An example response for the sentence "Take the cup." is:
 
 ```json
-{"sentence": "the yellow robot under the table",
- "number": 1,
- "parses": {"np": "(@w2:slm-Robot(slm-Robot ^ <det>the ^ <ident>specific ^ <quant>singular) ^ @x2:gs-SpatialLocating( <gs-locatum>w2:slm-Robot ^ <gs-placement>(x1:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w3:gs-UnderProjectionExternal ^ slm-Under) ^ <gs-relatum>(w5:slm-Table ^ slm-Table ^ <det>the ^ <ident>specific ^ <quant>singular))) ^ @x3:gum-ColorPropertyAscription( <concrete>true ^ <domain>w2:slm-Robot ^ <range>(w1:slm-Yellow ^ yellow ^ <concrete>true)))"},
- "http_status": 200}
+{
+    "version": "1.1.0",
+    "application": "web-openccg",
+    "uuid": "f25875d6-b137-4fc3-93c3-8dc9b4958595",
+    "sentence": "take the cup",
+    "parses": {
+        "smain": "@x1:gum-OrientationChange( <mood>imp ^ <gs-direction>(x2:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular)) ^ <gum-processInConfiguration>(w0:slm-Moving ^ slm-Taking))",
+        "smain/0": "@x1:gum-OrientationChange( <mood>imp ^ <gs-direction>(x2:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular)) ^ <gum-processInConfiguration>(w0:slm-Taking ^ slm-Taking))",
+        "smain/.r": "@x1:gs-AffectingDirectedMotion( <mood>imperative ^ <gs-route>x2 ^ <gum-actee>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular) ^ <gum-processInConfiguration>(w0:slm-Moving ^ slm-Taking))",
+        "smain/.r/0": "@x1:gs-AffectingDirectedMotion( <mood>imperative ^ <gs-route>x2 ^ <gum-actee>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular) ^ <gum-processInConfiguration>(w0:slm-Taking ^ slm-Taking))"
+    },
+    "http_status": 200,
+    "json_parses": {
+        "smain": {
+            "nominal": "x1:gum-OrientationChange",
+            "roles": [
+                {
+                    "type": "mood",
+                    "target": "imp"
+                },
+                [
+                    {
+                        "type": "gs-direction",
+                        "target": {
+                            "variable": "x2:gs-GeneralizedLocation",
+                            "roles": {
+                                "type": "gs-hasSpatialModality",
+                                "target": {
+                                    "variable": "w2:slm-Cup",
+                                    "roles": [
+                                        {
+                                            "entity": "cup"
+                                        },
+                                        {
+                                            "type": "det",
+                                            "target": "the"
+                                        },
+                                        {
+                                            "type": "ident",
+                                            "target": "specific"
+                                        },
+                                        {
+                                            "type": "quant",
+                                            "target": "singular"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "type": "gum-processInConfiguration",
+                        "target": {
+                            "variable": "w0:slm-Moving",
+                            "roles": {
+                                "entity": "slm-Taking"
+                            }
+                        }
+                    }
+                ]
+            ]
+        },
+        "smain/0": {
+            "nominal": "x1:gum-OrientationChange",
+            "roles": [
+                {
+                    "type": "mood",
+                    "target": "imp"
+                },
+                [
+                    {
+                        "type": "gs-direction",
+                        "target": {
+                            "variable": "x2:gs-GeneralizedLocation",
+                            "roles": {
+                                "type": "gs-hasSpatialModality",
+                                "target": {
+                                    "variable": "w2:slm-Cup",
+                                    "roles": [
+                                        {
+                                            "entity": "cup"
+                                        },
+                                        {
+                                            "type": "det",
+                                            "target": "the"
+                                        },
+                                        {
+                                            "type": "ident",
+                                            "target": "specific"
+                                        },
+                                        {
+                                            "type": "quant",
+                                            "target": "singular"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "type": "gum-processInConfiguration",
+                        "target": {
+                            "variable": "w0:slm-Taking",
+                            "roles": {
+                                "entity": "slm-Taking"
+                            }
+                        }
+                    }
+                ]
+            ]
+        },
+        "smain/.r": {
+            "nominal": "x1:gs-AffectingDirectedMotion",
+            "roles": [
+                {
+                    "type": "mood",
+                    "target": "imperative"
+                },
+                [
+                    {
+                        "type": "gs-route",
+                        "target": "x2"
+                    },
+                    [
+                        {
+                            "type": "gum-actee",
+                            "target": {
+                                "variable": "w2:slm-Cup",
+                                "roles": [
+                                    {
+                                        "entity": "cup"
+                                    },
+                                    {
+                                        "type": "det",
+                                        "target": "the"
+                                    },
+                                    {
+                                        "type": "ident",
+                                        "target": "specific"
+                                    },
+                                    {
+                                        "type": "quant",
+                                        "target": "singular"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "gum-processInConfiguration",
+                            "target": {
+                                "variable": "w0:slm-Moving",
+                                "roles": {
+                                    "entity": "slm-Taking"
+                                }
+                            }
+                        }
+                    ]
+                ]
+            ]
+        },
+        "smain/.r/0": {
+            "nominal": "x1:gs-AffectingDirectedMotion",
+            "roles": [
+                {
+                    "type": "mood",
+                    "target": "imperative"
+                },
+                [
+                    {
+                        "type": "gs-route",
+                        "target": "x2"
+                    },
+                    [
+                        {
+                            "type": "gum-actee",
+                            "target": {
+                                "variable": "w2:slm-Cup",
+                                "roles": [
+                                    {
+                                        "entity": "cup"
+                                    },
+                                    {
+                                        "type": "det",
+                                        "target": "the"
+                                    },
+                                    {
+                                        "type": "ident",
+                                        "target": "specific"
+                                    },
+                                    {
+                                        "type": "quant",
+                                        "target": "singular"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "gum-processInConfiguration",
+                            "target": {
+                                "variable": "w0:slm-Taking",
+                                "roles": {
+                                    "entity": "slm-Taking"
+                                }
+                            }
+                        }
+                    ]
+                ]
+            ]
+        }
+    }
+}
 ```
 
 
-### Querying OpenCCG
-
-The [OpenCCG](http://openccg.sourceforge.net/) service allows to parse sentences using the English [CCG grammar](https://www.sfbtr8.spatial-cognition.de/en/project/interaction/i5-diaspace/resources/index.html) based on the [Generalized Upper Model](https://www.sfbtr8.spatial-cognition.de/en/project/interaction/i1-ontospace/research/gum-20-30/index.html) by the SFB/TR 8 Spatial Cognition.
-
-It is wrapped into a small web app which can either be queried using a post request (e.g. using curl or wget), or used with a crude GUI:
-
-    $ curl --data "The yellow robot under the table." localhost:8080
-    {"sentence": "the yellow robot under the table", "number": 1, "parses": {"np": "(@w2:slm-Robot(slm-Robot ^ <det>the ^ <ident>specific ^ <quant>singular) ^ @x2:gs-SpatialLocating( <gs-locatum>w2:slm-Robot ^ <gs-placement>(x1:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w3:gs-UnderProjectionExternal ^ slm-Under) ^ <gs-relatum>(w5:slm-Table ^ slm-Table ^ <det>the ^ <ident>specific ^ <quant>singular))) ^ @x3:gum-ColorPropertyAscription( <concrete>true ^ <domain>w2:slm-Robot ^ <range>(w1:slm-Yellow ^ yellow ^ <concrete>true)))"}}
-
-When using the GUI (open your browser at [http://localhost:8080](http://localhost:8080)), the response is more human readable:
-
-    "the yellow robot under the table": 1 parse found.
-
-    Parse: np :
-      (@w2:slm-Robot(slm-Robot ^
-                    <det>the ^
-                    <ident>specific ^
-                    <quant>singular) ^ @x2:gs-SpatialLocating(
-                             <gs-locatum>w2:slm-Robot ^
-                             <gs-placement>(x1:gs-GeneralizedLocation ^
-                                            <gs-hasSpatialModality>(w3:gs-UnderProjectionExternal ^ slm-Under) ^
-                                            <gs-relatum>(w5:slm-Table ^ slm-Table ^
-                                                         <det>the ^
-                                                         <ident>specific ^
-                                                         <quant>singular))) ^ @x3:gum-ColorPropertyAscription(
-                                      <concrete>true ^
-                                      <domain>w2:slm-Robot ^
-                                      <range>(w1:slm-Yellow ^ yellow ^
-                                              <concrete>true)))
-
 ### Changing the port
 
-Many webservices use port 8080 as a default port.
-To change the port of this software, adjust the docker-compose file and change the port line from `"8080:80"` to your port on the left side (but keep the 80 in tact), so for example to set up the service on Port 9043, you would change it to `"9043:80"`.
+Most webservices use port 80 as a default port, and so does web-openccg.
+
+To change the port, adjust the docker-compose file and change the port line
+from `"80:80"` to your port on the left side (but keep the 80 on the right), so
+for example to set up the service on Port 9043, you would change it to
+`"9043:80"`.
+
+
+## Development
+
+Although not necessarily needed, I use a pipenv for local development to be
+able to compile the grammar to a parser using TatSu.
+I rely on [when-changed](https://github.com/joh/when-changed) to trigger
+automatic builds:
+
+    when-changed OpenCCG.ebnf make
+
+To start the development docker container, use the Makefile:
+
+    make run
+
+The development server binds to port 5000 and uses the
+[flask](http://flask.pocoo.org/) debug environment. Additionally, the docker
+container started with `make run` binds the app directory
+so that flask's reloading works properly.
