@@ -11,6 +11,9 @@ ENV PATH "$OPENCCG_HOME/bin:$PATH"
 ENV LD_LIBRARY_PATH "$OPENCCG_HOME/lib:$LD_LIBRARY_PATH"
 
 COPY nginx.conf /etc/nginx/sites-available/occg
+COPY app /app
+COPY Makefile /Makefile
+COPY OpenCCG.ebnf /OpenCCG.ebnf
 
 # Download and extract OpenCCG
 RUN curl -o openccg-0.9.5.tgz https://datapacket.dl.sourceforge.net/project/openccg/openccg/openccg%20v0.9.5%20-%20deplen%2C%20kenlm%2C%20disjunctivizer/openccg-0.9.5.tgz \
@@ -20,13 +23,16 @@ RUN curl -o openccg-0.9.5.tgz https://datapacket.dl.sourceforge.net/project/open
     && curl -O http://www.diaspace.uni-bremen.de/twiki/pub/DiaSpace/ReSources/english.zip \
     && unzip -d /english english.zip \
     && rm english.zip \
-# Server software: python 3, nginx, uwsgi
+# Server software: python 3, nginx, uwsgi; TatSu to parse the OpenCCG output
     && apt-get update \
     && apt-get install -y python3 python3-pip nginx \
     && pip3 install flask uwsgi tatsu \
+# Create the custom TatSu parser
+    && make \
 # Configure nginx
     && ln -s /etc/nginx/sites-available/occg /etc/nginx/sites-enabled/occg \
     && rm /etc/nginx/sites-enabled/default
+
 
 # Run Flask app behind nginx
 WORKDIR /app
