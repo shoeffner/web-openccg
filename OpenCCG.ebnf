@@ -1,0 +1,63 @@
+@@grammar :: OpenCCG
+
+start
+    = semspec $
+    ;
+
+semspec
+    = nominal
+    | term
+    | conjunction
+    | expression
+    ;
+
+conjunction
+    = @:expression '^' ~ @:conjunction
+    | @:expression
+    ;
+
+expression
+    = role_expression
+    | nominal_expression
+    | variable_expression
+    | atom_expression
+    ;
+
+role_expression
+    = role
+    ;
+
+variable_expression
+    = variable:variable '^' ~ roles:conjunction
+    | variable:variable
+    ;
+
+nominal_expression
+    = nominal:nominal
+    ;
+
+atom_expression
+    = entity:atom
+    ;
+
+term
+    = '(' ~ @:conjunction ')'
+    ;
+
+nominal
+    = '@' ~ nominal:variable roles:term
+    ;
+
+role
+    = '<' type:atom '>' target:variable
+    | '<' type:atom '>' target:term
+    | '<' type:atom '>' target:atom
+    ;
+
+variable
+    = /[a-z]\d+(:[a-zA-Z\-]+)*/
+    ;
+
+atom
+    = /[a-zA-Z\-\.]+/
+    ;
