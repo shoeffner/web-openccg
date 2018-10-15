@@ -4,14 +4,14 @@ This repository builds a small [nginx](https://nginx.org/)-webserver and python 
 
 After an initial `docker-compose up`, the service can be queried using a simple POST request, e.g. using curl:
 
-    $ curl --data "Take the cup." localhost
+    $ curl --data "Take the cup." localhost/parse
     {"version": "1.1.0", "application": "web-openccg", "uuid": "5fbcbc0d-c75e-4278-aa85-37a745847ae8", "sentence": "take the cup", "parses": {"smain": "@x1:gum-OrientationChange( <mood>imp ^ <gs-direction>(x2:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular)) ^ <gum-processInConfiguration>(w0:slm-Moving ^ slm-Taking))", "smain/0": "@x1:gum-OrientationChange( <mood>imp ^ <gs-direction>(x2:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular)) ^ <gum-processInConfiguration>(w0:slm-Taking ^ slm-Taking))", "smain/.r": "@x1:gs-AffectingDirectedMotion( <mood>imperative ^ <gs-route>x2 ^ <gum-actee>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular) ^ <gum-processInConfiguration>(w0:slm-Moving ^ slm-Taking))", "smain/.r/0": "@x1:gs-AffectingDirectedMotion( <mood>imperative ^ <gs-route>x2 ^ <gum-actee>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular) ^ <gum-processInConfiguration>(w0:slm-Taking ^ slm-Taking))"}, "http_status": 200, "json_parses": {"smain": {"nominal": "x1:gum-OrientationChange", "roles": [{"type": "mood", "target": "imp"}, [{"type": "gs-direction", "target": {"variable": "x2:gs-GeneralizedLocation", "roles": {"type": "gs-hasSpatialModality", "target": {"variable": "w2:slm-Cup", "roles": [{"entity": "cup"}, {"type": "det", "target": "the"}, {"type": "ident", "target": "specific"}, {"type": "quant", "target": "singular"}]}}}}, {"type": "gum-processInConfiguration", "target": {"variable": "w0:slm-Moving", "roles": {"entity": "slm-Taking"}}}]]}, "smain/0": {"nominal": "x1:gum-OrientationChange", "roles": [{"type": "mood", "target": "imp"}, [{"type": "gs-direction", "target": {"variable": "x2:gs-GeneralizedLocation", "roles": {"type": "gs-hasSpatialModality", "target": {"variable": "w2:slm-Cup", "roles": [{"entity": "cup"}, {"type": "det", "target": "the"}, {"type": "ident", "target": "specific"}, {"type": "quant", "target": "singular"}]}}}}, {"type": "gum-processInConfiguration", "target": {"variable": "w0:slm-Taking", "roles": {"entity": "slm-Taking"}}}]]}, "smain/.r": {"nominal": "x1:gs-AffectingDirectedMotion", "roles": [{"type": "mood", "target": "imperative"}, [{"type": "gs-route", "target": "x2"}, [{"type": "gum-actee", "target": {"variable": "w2:slm-Cup", "roles": [{"entity": "cup"}, {"type": "det", "target": "the"}, {"type": "ident", "target": "specific"}, {"type": "quant", "target": "singular"}]}}, {"type": "gum-processInConfiguration", "target": {"variable": "w0:slm-Moving", "roles": {"entity": "slm-Taking"}}}]]]}, "smain/.r/0": {"nominal": "x1:gs-AffectingDirectedMotion", "roles": [{"type": "mood", "target": "imperative"}, [{"type": "gs-route", "target": "x2"}, [{"type": "gum-actee", "target": {"variable": "w2:slm-Cup", "roles": [{"entity": "cup"}, {"type": "det", "target": "the"}, {"type": "ident", "target": "specific"}, {"type": "quant", "target": "singular"}]}}, {"type": "gum-processInConfiguration", "target": {"variable": "w0:slm-Taking", "roles": {"entity": "slm-Taking"}}}]]]}}}
 
 Or, as an example, using Python [requests](http://docs.python-requests.org/en/master/):
 
 ```python
 import requests
-print(requests.post('http://localhost', data={'sentence': 'Take the cup.'}).json())
+print(requests.post('http://localhost/parse', data={'sentence': 'Take the cup.'}).json())
 ```
 
 Note that is is not production ready, as it is really slow and not optimized:
@@ -22,17 +22,17 @@ Instead of keeping one (or multiple) instances of OpenCCG running to query them 
 
 ### Querying
 
-To query the service visually, just open your browser at [http://localhost/gui](http://localhost/gui).
+To query the service visually, just open your browser at [http://localhost/](http://localhost/).
 Otherwise, use curl, wget, or e.g. python requests to query web-openccg via the command line or your application.
 
 If your client allows to build your request body manually, like curl, just put the sentence inside:
 
-    curl --data "Take the cup." localhost
+    curl --data "Take the cup." localhost/parse
 
 However, many high level frameworks like python requests usually use a
 key-value mechanism for post data. In this case, use the key `sentence`:
 
-    requests.post('http://localhost', data={'sentence': 'Take the cup.'})
+    requests.post('http://localhost/parse', data={'sentence': 'Take the cup.'})
 
 
 ### Response format
