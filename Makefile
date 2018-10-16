@@ -1,4 +1,4 @@
-app/openccg_parser.py: OpenCCG.ebnf
+app/generated_openccg_parser.py: OpenCCG.ebnf
 	tatsu --generate-parser $< --outfile $@
 
 .PHONY: run

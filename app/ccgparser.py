@@ -1,7 +1,7 @@
 from tatsu.ast import AST
 from tatsu.util import asjson
 
-from openccg_parser import OpenCCGParser, OpenCCGSemantics
+from generated_openccg_parser import OpenCCGParser, OpenCCGSemantics
 
 
 def ccg_to_json(to_parse):
