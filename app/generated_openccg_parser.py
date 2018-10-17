@@ -88,106 +88,93 @@ class OpenCCGParser(Parser):
     def _semspec_(self):  # noqa
         with self._choice():
             with self._option():
-                self._nominal_()
-            with self._option():
                 self._term_()
             with self._option():
-                self._conjunction_()
-            with self._option():
-                self._expression_()
-            self._error('no available options')
-
-    @tatsumasu()
-    def _conjunction_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._expression_()
-                self.name_last_node('@')
-                self._token('^')
-                self._cut()
-                self._conjunction_()
-                self.name_last_node('@')
-            with self._option():
-                self._expression_()
-                self.name_last_node('@')
-            self._error('no available options')
-
-    @tatsumasu()
-    def _expression_(self):  # noqa
-        with self._choice():
-            with self._option():
-                self._role_expression_()
-            with self._option():
-                self._nominal_expression_()
-            with self._option():
-                self._variable_expression_()
-            with self._option():
-                self._atom_expression_()
-            self._error('no available options')
-
-    @tatsumasu()
-    def _role_expression_(self):  # noqa
-        self._role_()
-
-    @tatsumasu()
-    def _variable_expression_(self):  # noqa
-        with self._choice():
+                self._nominal_()
             with self._option():
                 self._variable_()
-                self.name_last_node('variable')
-                self._token('^')
-                self._cut()
-                self._conjunction_()
-                self.name_last_node('roles')
             with self._option():
-                self._variable_()
-                self.name_last_node('variable')
+                self._role_()
             self._error('no available options')
-        self.ast._define(
-            ['roles', 'variable'],
-            []
-        )
-
-    @tatsumasu()
-    def _nominal_expression_(self):  # noqa
-        self._nominal_()
-        self.name_last_node('nominal')
-        self.ast._define(
-            ['nominal'],
-            []
-        )
-
-    @tatsumasu()
-    def _atom_expression_(self):  # noqa
-        self._atom_()
-        self.name_last_node('entity')
-        self.ast._define(
-            ['entity'],
-            []
-        )
 
     @tatsumasu()
     def _term_(self):  # noqa
-        self._token('(')
-        self._cut()
-        self._conjunction_()
-        self.name_last_node('@')
-        self._token(')')
+        with self._choice():
+            with self._option():
+                self._token('(')
 
-    @tatsumasu()
-    def _nominal_(self):  # noqa
-        self._token('@')
-        self._cut()
-        self._variable_()
-        self.name_last_node('nominal')
-        self._term_()
-        self.name_last_node('roles')
+                def sep1():
+                    self._token('^')
+
+                def block1():
+                    self._nominal_()
+                self._gather(block1, sep1)
+                self.name_last_node('@')
+                self._token(')')
+            with self._option():
+                self._token('(')
+                self._semspec_()
+                self.name_last_node('@')
+                self._token(')')
+            self._error('no available options')
+
+    @tatsumasu('Variable')
+    def _variable_(self):  # noqa
+        with self._choice():
+            with self._option():
+                self._variable_name_()
+                self.name_last_node('name')
+
+                def sep2():
+                    self._token('^')
+
+                def block2():
+                    self._role_()
+                self._gather(block2, sep2)
+                self.name_last_node('roles')
+            with self._option():
+                self._token('(')
+                self._cut()
+                self._variable_name_()
+                self.name_last_node('name')
+
+                def sep5():
+                    self._token('^')
+
+                def block5():
+                    self._role_()
+                self._gather(block5, sep5)
+                self.name_last_node('roles')
+                self._token(')')
+            self._error('no available options')
         self.ast._define(
-            ['nominal', 'roles'],
+            ['name', 'roles'],
             []
         )
 
-    @tatsumasu()
+    @tatsumasu('Nominal')
+    def _nominal_(self):  # noqa
+        self._token('@')
+        self._cut()
+        self._variable_name_()
+        self.name_last_node('name')
+        self._token('(')
+        self._cut()
+
+        def sep2():
+            self._token('^')
+
+        def block2():
+            self._role_()
+        self._gather(block2, sep2)
+        self.name_last_node('roles')
+        self._token(')')
+        self.ast._define(
+            ['name', 'roles'],
+            []
+        )
+
+    @tatsumasu('Role')
     def _role_(self):  # noqa
         with self._choice():
             with self._option():
@@ -202,13 +189,11 @@ class OpenCCGParser(Parser):
                 self._atom_()
                 self.name_last_node('type')
                 self._token('>')
-                self._term_()
+                self._atom_()
                 self.name_last_node('target')
             with self._option():
-                self._token('<')
-                self._atom_()
+                self._constant('entity')
                 self.name_last_node('type')
-                self._token('>')
                 self._atom_()
                 self.name_last_node('target')
             self._error('no available options')
@@ -218,7 +203,7 @@ class OpenCCGParser(Parser):
         )
 
     @tatsumasu()
-    def _variable_(self):  # noqa
+    def _variable_name_(self):  # noqa
         self._pattern(r'[a-z]\d+(:[a-zA-Z\-]+)?')
 
     @tatsumasu()
@@ -233,25 +218,10 @@ class OpenCCGSemantics(object):
     def semspec(self, ast):  # noqa
         return ast
 
-    def conjunction(self, ast):  # noqa
-        return ast
-
-    def expression(self, ast):  # noqa
-        return ast
-
-    def role_expression(self, ast):  # noqa
-        return ast
-
-    def variable_expression(self, ast):  # noqa
-        return ast
-
-    def nominal_expression(self, ast):  # noqa
-        return ast
-
-    def atom_expression(self, ast):  # noqa
-        return ast
-
     def term(self, ast):  # noqa
+        return ast
+
+    def variable(self, ast):  # noqa
         return ast
 
     def nominal(self, ast):  # noqa
@@ -260,7 +230,7 @@ class OpenCCGSemantics(object):
     def role(self, ast):  # noqa
         return ast
 
-    def variable(self, ast):  # noqa
+    def variable_name(self, ast):  # noqa
         return ast
 
     def atom(self, ast):  # noqa

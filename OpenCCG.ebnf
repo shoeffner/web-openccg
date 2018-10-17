@@ -5,56 +5,33 @@ start
     ;
 
 semspec
-    = nominal
-    | term
-    | conjunction
-    | expression
-    ;
-
-conjunction
-    = @:expression '^' ~ @:conjunction
-    | @:expression
-    ;
-
-expression
-    = role_expression
-    | nominal_expression
-    | variable_expression
-    | atom_expression
-    ;
-
-role_expression
-    = role
-    ;
-
-variable_expression
-    = variable:variable '^' ~ roles:conjunction
-    | variable:variable
-    ;
-
-nominal_expression
-    = nominal:nominal
-    ;
-
-atom_expression
-    = entity:atom
+    = term
+    | nominal
+    | variable
+    | role
     ;
 
 term
-    = '(' ~ @:conjunction ')'
+    = '(' @:'^'.{ nominal }* ')'
+    | '(' @:semspec ')'
     ;
 
-nominal
-    = '@' ~ nominal:variable roles:term
+variable::Variable
+    = name:variable_name roles:'^'.{ role }*
+    | '(' ~ name:variable_name roles:'^'.{ role }* ')'
     ;
 
-role
+nominal::Nominal::Variable
+    = '@' ~ name:variable_name '(' ~ roles:'^'.{ role }* ')'
+    ;
+
+role::Role
     = '<' type:atom '>' target:variable
-    | '<' type:atom '>' target:term
     | '<' type:atom '>' target:atom
+    | type:`entity` target:atom
     ;
 
-variable
+variable_name
     = /[a-z]\d+(:[a-zA-Z\-]+)?/
     ;
 
