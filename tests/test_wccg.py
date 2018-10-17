@@ -9,7 +9,7 @@ import os
 os.sys.path.append(Path(__file__).parent / '..' / 'app')
 
 
-import ccgparser  # noqa
+import wccg  # noqa
 
 
 class CCGtoJSONTestCase(unittest.TestCase):
@@ -28,4 +28,4 @@ class CCGtoJSONTestCase(unittest.TestCase):
                 ccg = test_case['ccg']
                 expected = test_case['json']
 
-                self.assertEqual(expected, ccgparser.ccg_to_json(ccg))
+                self.assertEqual(expected, wccg.ccg_to_json(ccg))
