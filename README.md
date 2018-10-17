@@ -50,7 +50,7 @@ If a sentence was provided during the request, these fields are present:
 
 If at least one successful parse exists, the these fields are included:
 - `parses`: A dictionary of parse-identifiers (e.g. "np") to actual parses as OpenCCG outputs them.
-- `json_parses`: A version of the OpenCCG outputs in a flat JSON. This is produced via a custom grammar for [TatSu](https://github.com/neogeny/TatSu), with some post-processing to keep the JSON hierarchy flat (TatSu creates right-deep trees).
+- `json_parses`: A version of the OpenCCG outputs in a flat JSON. This is produced via a custom grammar for [TatSu](https://github.com/neogeny/TatSu). For details see [below](#json-format)
 
 *Note:* The keys are shared between `parses` and `json_parses`, thus you can easily lookup the original output for a JSON parse and vice-versa.
 
@@ -355,8 +355,65 @@ An example response for the sentence "Take the cup." is:
         }
     }
 }
-
 ```
+
+
+### JSON format
+
+Current version: 2.1.0
+
+The JSON format for the OpenCCG parses can be determined from the example above
+or by carefully inspecting the fully typed
+[OpenCCG.ebnf](https://github.com/shoeffner/web-openccg/blob/master/OpenCCG.ebnf).
+
+There are three different types of objects: Nominal, Variable, and Role. The full
+semantic specification (the JSON file) can either be one single entity of any of the
+three types or a list of Nominals. If we find parses which are lists of
+variables or roles, the grammar will be extended. Please open an issue if you
+find sentences which can not be parsed correctly.
+
+
+#### Nominal and Variable
+
+A nominal is like a special variable, it describes the "main theme" of the sentence.
+Since they are practically the same (they actually have very similar parsing
+rules), the JSON format represents them with an identical structure:
+
+```json
+{
+    "__class__": "Variable",
+    "name": "x1",
+    "type": "gum-OrientationChange",
+    "roles": []
+}
+```
+
+- `__class__` is either `Variable` or `Nominal`.
+- `name` is the variable named used by OpenCCG, it is a letter followed by a number, for example `x1` or `w12`.
+- `type` is a [GUM](https://www.ontospace.uni-bremen.de/ontology/stable/GUM-3-space.owl) specifier denoting the type of the variable. It can also be `null`, if the type is not specified.
+- `roles` is a list of roles as described below.
+
+
+#### Role
+
+A Role defines all properties a Variable or Nominal can have.
+It follows a very similar structure:
+
+```json
+{
+    "__class__": "Role",
+    "type": "quant",
+    "target": ...
+}
+```
+
+- `__class__`: `Role`.
+- `type`: The role type. This determines the `target` possibilities.
+- `target`: The value of the role. This can be multiple different things, see below.
+
+If the type is `entity`, the target will be an instance, like "cup" or "slm-Taking".
+If the type has a prefix followed by a dash, e.g. `gs-hasSpatialModality` or `gs-direction`, then the target will be a `Variable`.
+If the type is any other string, the target will be an atomic string, e.g. the type `det` can have the target `the`, while the type `quant` can have the target `singular`.
 
 
 ### Changing the port
