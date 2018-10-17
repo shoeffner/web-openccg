@@ -32,7 +32,8 @@
                                                     "target": "gs-DenialOfFunctionalControl"
                                                 }
                                             ],
-                                            "name": "w3:gs-DenialOfFunctionalControl"
+                                            "name": "w3",
+                                            "type": "gs-DenialOfFunctionalControl"
                                         }
                                     },
                                     {
@@ -62,15 +63,18 @@
                                                     "target": "singular"
                                                 }
                                             ],
-                                            "name": "w5:slm-Table"
+                                            "name": "w5",
+                                            "type": "slm-Table"
                                         }
                                     }
                                 ],
-                                "name": "x3:gs-GeneralizedLocation"
+                                "name": "x3",
+                                "type": "gs-GeneralizedLocation"
                             }
                         }
                     ],
-                    "name": "x2:gs-GeneralizedRoute"
+                    "name": "x2",
+                    "type": "gs-GeneralizedRoute"
                 }
             },
             {
@@ -100,7 +104,8 @@
                             "target": "singular"
                         }
                     ],
-                    "name": "w2:slm-Cup"
+                    "name": "w2",
+                    "type": "slm-Cup"
                 }
             },
             {
@@ -115,10 +120,12 @@
                             "target": "slm-Taking"
                         }
                     ],
-                    "name": "w0:slm-Moving"
+                    "name": "w0",
+                    "type": "slm-Moving"
                 }
             }
         ],
-        "name": "x1:gs-AffectingDirectedMotion"
+        "name": "x1",
+        "type": "gs-AffectingDirectedMotion"
     }
 }

@@ -41,7 +41,8 @@
                                         "target": "singular"
                                     }
                                 ],
-                                "name": "w2:slm-Cup"
+                                "name": "w2",
+                                "type": "slm-Cup"
                             }
                         },
                         {
@@ -56,14 +57,17 @@
                                         "target": "slm-Taking"
                                     }
                                 ],
-                                "name": "w0:slm-Taking"
+                                "name": "w0",
+                                "type": "slm-Taking"
                             }
                         }
                     ],
-                    "name": "x2"
+                    "name": "x2",
+                    "type": null
                 }
             }
         ],
-        "name": "x1:gs-AffectingDirectedMotion"
+        "name": "x1",
+        "type": "gs-AffectingDirectedMotion"
     }
 }

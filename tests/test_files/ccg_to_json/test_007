@@ -2,7 +2,8 @@
     "ccg": "@x1:gum-OrientationChange( <mood>imp ^ <gs-direction>(x2:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular)) ^ <gum-processInConfiguration>(w0:slm-Moving ^ slm-Taking))",
     "json": {
         "__class__": "Nominal",
-        "name": "x1:gum-OrientationChange",
+        "name": "x1",
+        "type": "gum-OrientationChange",
         "roles": [
             {
                 "__class__": "Role",
@@ -14,14 +15,16 @@
                 "type": "gs-direction",
                 "target": {
                     "__class__": "Variable",
-                    "name": "x2:gs-GeneralizedLocation",
+                    "name": "x2",
+                    "type": "gs-GeneralizedLocation",
                     "roles": [
                         {
                             "__class__": "Role",
                             "type": "gs-hasSpatialModality",
                             "target": {
                                 "__class__": "Variable",
-                                "name": "w2:slm-Cup",
+                                "name": "w2",
+                                "type": "slm-Cup",
                                 "roles": [
                                     {
                                         "__class__": "Role",
@@ -54,7 +57,8 @@
                 "type": "gum-processInConfiguration",
                 "target": {
                     "__class__": "Variable",
-                    "name": "w0:slm-Moving",
+                    "name": "w0",
+                    "type": "slm-Moving",
                     "roles": [
                         {
                             "__class__": "Role",

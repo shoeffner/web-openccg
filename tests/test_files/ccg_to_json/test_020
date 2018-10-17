@@ -39,7 +39,8 @@
                                                                     "target": "slm-To"
                                                                 }
                                                             ],
-                                                            "name": "w9:gs-GeneralDirectional"
+                                                            "name": "w9",
+                                                            "type": "gs-GeneralDirectional"
                                                         }
                                                     },
                                                     {
@@ -69,15 +70,18 @@
                                                                     "target": "singular"
                                                                 }
                                                             ],
-                                                            "name": "w11:slm-Shelf"
+                                                            "name": "w11",
+                                                            "type": "slm-Shelf"
                                                         }
                                                     }
                                                 ],
-                                                "name": "x1:gs-GeneralizedLocation"
+                                                "name": "x1",
+                                                "type": "gs-GeneralizedLocation"
                                             }
                                         }
                                     ],
-                                    "name": "x5:gs-GeneralizedRoute"
+                                    "name": "x5",
+                                    "type": "gs-GeneralizedRoute"
                                 }
                             },
                             {
@@ -98,15 +102,18 @@
                                                         "target": "slm-Taking"
                                                     }
                                                 ],
-                                                "name": "w0:slm-Taking"
+                                                "name": "w0",
+                                                "type": "slm-Taking"
                                             }
                                         }
                                     ],
-                                    "name": "w2:slm-Cup"
+                                    "name": "w2",
+                                    "type": "slm-Cup"
                                 }
                             }
                         ],
-                        "name": "x3:gs-AffectingDirectedMotion"
+                        "name": "x3",
+                        "type": "gs-AffectingDirectedMotion"
                     }
                 },
                 {
@@ -148,7 +155,8 @@
                                                         "target": "third"
                                                     }
                                                 ],
-                                                "name": "w8:gum-ConsciousBeing"
+                                                "name": "w8",
+                                                "type": "gum-ConsciousBeing"
                                             }
                                         },
                                         {
@@ -163,19 +171,23 @@
                                                         "target": "slm-Bringing"
                                                     }
                                                 ],
-                                                "name": "w7:slm-Bringing"
+                                                "name": "w7",
+                                                "type": "slm-Bringing"
                                             }
                                         }
                                     ],
-                                    "name": "x5:gs-GeneralizedRoute"
+                                    "name": "x5",
+                                    "type": "gs-GeneralizedRoute"
                                 }
                             }
                         ],
-                        "name": "x4:gs-AffectingDirectedMotion"
+                        "name": "x4",
+                        "type": "gs-AffectingDirectedMotion"
                     }
                 }
             ],
-            "name": "x2:gum-MultiConfiguration"
+            "name": "x2",
+            "type": "gum-MultiConfiguration"
         },
         {
             "__class__": "Nominal",
@@ -207,7 +219,8 @@
                                 "target": "singular"
                             }
                         ],
-                        "name": "w2:slm-Cup"
+                        "name": "w2",
+                        "type": "slm-Cup"
                     }
                 },
                 {
@@ -228,7 +241,8 @@
                                             "target": "slm-Off"
                                         }
                                     ],
-                                    "name": "w3:gs-DenialOfFunctionalControl"
+                                    "name": "w3",
+                                    "type": "gs-DenialOfFunctionalControl"
                                 }
                             },
                             {
@@ -258,15 +272,18 @@
                                             "target": "singular"
                                         }
                                     ],
-                                    "name": "w5:slm-Table"
+                                    "name": "w5",
+                                    "type": "slm-Table"
                                 }
                             }
                         ],
-                        "name": "x6:gs-GeneralizedLocation"
+                        "name": "x6",
+                        "type": "gs-GeneralizedLocation"
                     }
                 }
             ],
-            "name": "x7:gs-SpatialLocating"
+            "name": "x7",
+            "type": "gs-SpatialLocating"
         }
     ]
 }

@@ -3,7 +3,7 @@
     "json": [
         {
             "__class__": "Nominal",
-            "name": "x1:gs-AffectingDirectedMotion",
+            "name": "x1",
             "roles": [
                 {
                     "__class__": "Role",
@@ -22,7 +22,7 @@
                                 "type": "gum-actee",
                                 "target": {
                                     "__class__": "Variable",
-                                    "name": "w2:slm-Cup",
+                                    "name": "w2",
                                     "roles": [
                                         {
                                             "__class__": "Role",
@@ -44,7 +44,8 @@
                                             "type": "quant",
                                             "target": "singular"
                                         }
-                                    ]
+                                    ],
+                                    "type": "slm-Cup"
                                 }
                             },
                             {
@@ -52,52 +53,56 @@
                                 "type": "gum-processInConfiguration",
                                 "target": {
                                     "__class__": "Variable",
-                                    "name": "w0:slm-Taking",
+                                    "name": "w0",
                                     "roles": [
                                         {
                                             "__class__": "Role",
                                             "type": "entity",
                                             "target": "slm-Taking"
                                         }
-                                    ]
+                                    ],
+                                    "type": "slm-Taking"
                                 }
                             }
-                        ]
+                        ],
+                        "type": null
                     }
                 }
-            ]
+            ],
+            "type": "gs-AffectingDirectedMotion"
         },
         {
             "__class__": "Nominal",
-            "name": "x4:gs-SpatialLocating",
+            "name": "x4",
             "roles": [
                 {
                     "__class__": "Role",
                     "type": "gs-locatum",
                     "target": {
                         "__class__": "Variable",
-                        "name": "w2:slm-Cup",
+                        "name": "w2",
                         "roles": [
                             {
                                 "__class__": "Role",
                                 "type": "gs-placement",
                                 "target": {
                                     "__class__": "Variable",
-                                    "name": "x3:gs-GeneralizedLocation",
+                                    "name": "x3",
                                     "roles": [
                                         {
                                             "__class__": "Role",
                                             "type": "gs-hasSpatialModality",
                                             "target": {
                                                 "__class__": "Variable",
-                                                "name": "w3:gs-DenialOfFunctionalControl",
+                                                "name": "w3",
                                                 "roles": [
                                                     {
                                                         "__class__": "Role",
                                                         "type": "entity",
                                                         "target": "slm-Off"
                                                     }
-                                                ]
+                                                ],
+                                                "type": "gs-DenialOfFunctionalControl"
                                             }
                                         },
                                         {
@@ -105,7 +110,7 @@
                                             "type": "gs-relatum",
                                             "target": {
                                                 "__class__": "Variable",
-                                                "name": "w5:slm-Table",
+                                                "name": "w5",
                                                 "roles": [
                                                     {
                                                         "__class__": "Role",
@@ -127,16 +132,20 @@
                                                         "type": "quant",
                                                         "target": "singular"
                                                     }
-                                                ]
+                                                ],
+                                                "type": "slm-Table"
                                             }
                                         }
-                                    ]
+                                    ],
+                                    "type": "gs-GeneralizedLocation"
                                 }
                             }
-                        ]
+                        ],
+                        "type": "slm-Cup"
                     }
                 }
-            ]
+            ],
+            "type": "gs-SpatialLocating"
         }
     ]
 }

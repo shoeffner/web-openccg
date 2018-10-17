@@ -2,7 +2,8 @@
     "ccg": "(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular)",
     "json": {
         "__class__": "Variable",
-        "name": "w2:slm-Cup",
+        "name": "w2",
+        "type": "slm-Cup",
         "roles": [
             {
                 "__class__": "Role",

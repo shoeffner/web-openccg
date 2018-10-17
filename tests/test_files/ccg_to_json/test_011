@@ -40,7 +40,8 @@
                                             "type": "quant"
                                         }
                                     ],
-                                    "name": "w2:slm-Cup"
+                                    "name": "w2",
+                                    "type": "slm-Cup"
                                 },
                                 "type": "gum-actee"
                             },
@@ -55,17 +56,20 @@
                                             "type": "entity"
                                         }
                                     ],
-                                    "name": "w0:slm-Moving"
+                                    "name": "w0",
+                                    "type": "slm-Moving"
                                 },
                                 "type": "gum-processInConfiguration"
                             }
                         ],
-                        "name": "x2"
+                        "name": "x2",
+                        "type": null
                     },
                     "type": "gs-route"
                 }
             ],
-            "name": "x1:gs-AffectingDirectedMotion"
+            "name": "x1",
+            "type": "gs-AffectingDirectedMotion"
         },
         {
             "__class__": "Nominal",
@@ -91,7 +95,8 @@
                                                         "type": "entity"
                                                     }
                                                 ],
-                                                "name": "w3:gs-DenialOfFunctionalControl"
+                                                "name": "w3",
+                                                "type": "gs-DenialOfFunctionalControl"
                                             },
                                             "type": "gs-hasSpatialModality"
                                         },
@@ -121,22 +126,26 @@
                                                         "type": "quant"
                                                     }
                                                 ],
-                                                "name": "w5:slm-Table"
+                                                "name": "w5",
+                                                "type": "slm-Table"
                                             },
                                             "type": "gs-relatum"
                                         }
                                     ],
-                                    "name": "x3:gs-GeneralizedLocation"
+                                    "name": "x3",
+                                    "type": "gs-GeneralizedLocation"
                                 },
                                 "type": "gs-placement"
                             }
                         ],
-                        "name": "w2:slm-Cup"
+                        "name": "w2",
+                        "type": "slm-Cup"
                     },
                     "type": "gs-locatum"
                 }
             ],
-            "name": "x4:gs-SpatialLocating"
+            "name": "x4",
+            "type": "gs-SpatialLocating"
         }
     ]
 }

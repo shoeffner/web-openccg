@@ -3,14 +3,14 @@
     "json": [
         {
             "__class__": "Nominal",
-            "name": "x2:gum-MultiConfiguration",
+            "name": "x2",
             "roles": [
                 {
                     "__class__": "Role",
                     "type": "alpha",
                     "target": {
                         "__class__": "Variable",
-                        "name": "x3:gs-AffectingDirectedMotion",
+                        "name": "x3",
                         "roles": [
                             {
                                 "__class__": "Role",
@@ -29,30 +29,34 @@
                                             "type": "gum-actee",
                                             "target": {
                                                 "__class__": "Variable",
-                                                "name": "w2:slm-Cup",
+                                                "name": "w2",
                                                 "roles": [
                                                     {
                                                         "__class__": "Role",
                                                         "type": "gum-processInConfiguration",
                                                         "target": {
                                                             "__class__": "Variable",
-                                                            "name": "w0:slm-Moving",
+                                                            "name": "w0",
                                                             "roles": [
                                                                 {
                                                                     "__class__": "Role",
                                                                     "type": "entity",
                                                                     "target": "slm-Taking"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "type": "slm-Moving"
                                                         }
                                                     }
-                                                ]
+                                                ],
+                                                "type": "slm-Cup"
                                             }
                                         }
-                                    ]
+                                    ],
+                                    "type": null
                                 }
                             }
-                        ]
+                        ],
+                        "type": "gs-AffectingDirectedMotion"
                     }
                 },
                 {
@@ -60,7 +64,7 @@
                     "type": "beta",
                     "target": {
                         "__class__": "Variable",
-                        "name": "x4:gs-AffectingDirectedMotion",
+                        "name": "x4",
                         "roles": [
                             {
                                 "__class__": "Role",
@@ -72,28 +76,29 @@
                                 "type": "gs-route",
                                 "target": {
                                     "__class__": "Variable",
-                                    "name": "x6:gs-GeneralizedRoute",
+                                    "name": "x6",
                                     "roles": [
                                         {
                                             "__class__": "Role",
                                             "type": "gs-destination",
                                             "target": {
                                                 "__class__": "Variable",
-                                                "name": "x1:gs-GeneralizedLocation",
+                                                "name": "x1",
                                                 "roles": [
                                                     {
                                                         "__class__": "Role",
                                                         "type": "gs-hasSpatialModality",
                                                         "target": {
                                                             "__class__": "Variable",
-                                                            "name": "w9:gs-GeneralDirectional",
+                                                            "name": "w9",
                                                             "roles": [
                                                                 {
                                                                     "__class__": "Role",
                                                                     "type": "entity",
                                                                     "target": "slm-To"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "type": "gs-GeneralDirectional"
                                                         }
                                                     },
                                                     {
@@ -101,7 +106,7 @@
                                                         "type": "gs-relatum",
                                                         "target": {
                                                             "__class__": "Variable",
-                                                            "name": "w11:slm-Shelf",
+                                                            "name": "w11",
                                                             "roles": [
                                                                 {
                                                                     "__class__": "Role",
@@ -123,13 +128,16 @@
                                                                     "type": "quant",
                                                                     "target": "singular"
                                                                 }
-                                                            ]
+                                                            ],
+                                                            "type": "slm-Shelf"
                                                         }
                                                     }
-                                                ]
+                                                ],
+                                                "type": "gs-GeneralizedLocation"
                                             }
                                         }
-                                    ]
+                                    ],
+                                    "type": "gs-GeneralizedRoute"
                                 }
                             },
                             {
@@ -137,7 +145,7 @@
                                 "type": "gum-actee",
                                 "target": {
                                     "__class__": "Variable",
-                                    "name": "w8:gum-ConsciousBeing",
+                                    "name": "w8",
                                     "roles": [
                                         {
                                             "__class__": "Role",
@@ -154,7 +162,8 @@
                                             "type": "person",
                                             "target": "third"
                                         }
-                                    ]
+                                    ],
+                                    "type": "gum-ConsciousBeing"
                                 }
                             },
                             {
@@ -162,31 +171,34 @@
                                 "type": "gum-processInConfiguration",
                                 "target": {
                                     "__class__": "Variable",
-                                    "name": "w7:slm-Bringing",
+                                    "name": "w7",
                                     "roles": [
                                         {
                                             "__class__": "Role",
                                             "type": "entity",
                                             "target": "slm-Bringing"
                                         }
-                                    ]
+                                    ],
+                                    "type": "slm-Bringing"
                                 }
                             }
-                        ]
+                        ],
+                        "type": "gs-AffectingDirectedMotion"
                     }
                 }
-            ]
+            ],
+            "type": "gum-MultiConfiguration"
         },
         {
             "__class__": "Nominal",
-            "name": "x8:gs-SpatialLocating",
+            "name": "x8",
             "roles": [
                 {
                     "__class__": "Role",
                     "type": "gs-locatum",
                     "target": {
                         "__class__": "Variable",
-                        "name": "w2:slm-Cup",
+                        "name": "w2",
                         "roles": [
                             {
                                 "__class__": "Role",
@@ -208,7 +220,8 @@
                                 "type": "quant",
                                 "target": "singular"
                             }
-                        ]
+                        ],
+                        "type": "slm-Cup"
                     }
                 },
                 {
@@ -216,21 +229,22 @@
                     "type": "gs-placement",
                     "target": {
                         "__class__": "Variable",
-                        "name": "x7:gs-GeneralizedLocation",
+                        "name": "x7",
                         "roles": [
                             {
                                 "__class__": "Role",
                                 "type": "gs-hasSpatialModality",
                                 "target": {
                                     "__class__": "Variable",
-                                    "name": "w3:gs-DenialOfFunctionalControl",
+                                    "name": "w3",
                                     "roles": [
                                         {
                                             "__class__": "Role",
                                             "type": "entity",
                                             "target": "slm-Off"
                                         }
-                                    ]
+                                    ],
+                                    "type": "gs-DenialOfFunctionalControl"
                                 }
                             },
                             {
@@ -238,7 +252,7 @@
                                 "type": "gs-relatum",
                                 "target": {
                                     "__class__": "Variable",
-                                    "name": "w5:slm-Table",
+                                    "name": "w5",
                                     "roles": [
                                         {
                                             "__class__": "Role",
@@ -260,13 +274,16 @@
                                             "type": "quant",
                                             "target": "singular"
                                         }
-                                    ]
+                                    ],
+                                    "type": "slm-Table"
                                 }
                             }
-                        ]
+                        ],
+                        "type": "gs-GeneralizedLocation"
                     }
                 }
-            ]
+            ],
+            "type": "gs-SpatialLocating"
         }
     ]
 }

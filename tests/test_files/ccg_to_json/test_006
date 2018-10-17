@@ -9,6 +9,7 @@
                 "type": "mood"
             }
         ],
-        "name": "x1:gum-OrientationChange"
+        "name": "x1",
+        "type": "gum-OrientationChange"
     }
 }
