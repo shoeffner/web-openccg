@@ -31,10 +31,10 @@ role::Role
     | type:`entity` target:atom
     ;
 
-variable_name
+variable_name::str
     = /[a-z]\d+(:[a-zA-Z\-]+)?/
     ;
 
-atom
+atom::str
     = /[a-zA-Z\-\.]+/
     ;
