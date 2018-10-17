@@ -1,0 +1,181 @@
+{
+   "nominal": "x2:gum-MultiConfiguration",
+   "roles": [
+       {
+           "type": "alpha",
+           "target": {
+               "variable": "x3:gs-AffectingDirectedMotion",
+               "roles": [
+                   {
+                       "type": "mood",
+                       "target": "imperative"
+                   },
+                   {
+                       "type": "gs-route",
+                       "target": {
+                           "variable": "x5:gs-GeneralizedRoute",
+                           "roles": {
+                               "type": "gs-pathPlacement",
+                               "target": {
+                                   "variable": "x7:gs-GeneralizedLocation",
+                                   "roles": [
+                                       {
+                                           "type": "gs-hasSpatialModality",
+                                           "target": {
+                                               "variable": "w3:gs-DenialOfFunctionalControl",
+                                               "roles": {
+                                                   "entity": "gs-DenialOfFunctionalControl"
+                                               }
+                                           }
+                                       },
+                                       {
+                                           "type": "gs-relatum",
+                                           "target": {
+                                               "variable": "w5:slm-Table",
+                                               "roles": [
+                                                   {
+                                                       "entity": "slm-Table"
+                                                   },
+                                                   {
+                                                       "type": "det",
+                                                       "target": "the"
+                                                   },
+                                                   {
+                                                       "type": "ident",
+                                                       "target": "specific"
+                                                   },
+                                                   {
+                                                       "type": "quant",
+                                                       "target": "singular"
+                                                   }
+                                               ]
+                                           }
+                                       }
+                                   ]
+                               }
+                           }
+                       }
+                   },
+                   {
+                       "type": "gum-actee",
+                       "target": {
+                           "variable": "w2:slm-Cup",
+                           "roles": [
+                               {
+                                   "entity": "cup"
+                               },
+                               {
+                                   "type": "det",
+                                   "target": "the"
+                               },
+                               {
+                                   "type": "ident",
+                                   "target": "specific"
+                               },
+                               {
+                                   "type": "quant",
+                                   "target": "singular"
+                               }
+                           ]
+                       }
+                   },
+                   {
+                       "type": "gum-processInConfiguration",
+                       "target": {
+                           "variable": "w0:slm-Moving",
+                           "roles": {
+                               "entity": "slm-Taking"
+                           }
+                       }
+                   }
+               ]
+           }
+       },
+       {
+           "type": "beta",
+           "target": {
+               "variable": "x4:gs-AffectingDirectedMotion",
+               "roles": [
+                   {
+                       "type": "mood",
+                       "target": "imperative"
+                   },
+                   {
+                       "type": "gs-route",
+                       "target": {
+                           "variable": "x6:gs-GeneralizedRoute",
+                           "roles": {
+                               "type": "gs-destination",
+                               "target": {
+                                   "variable": "x1:gs-GeneralizedLocation",
+                                   "roles": [
+                                       {
+                                           "type": "gs-hasSpatialModality",
+                                           "target": {
+                                               "variable": "w9:gs-GeneralDirectional",
+                                               "roles": {
+                                                   "entity": "slm-To"
+                                               }
+                                           }
+                                       },
+                                       {
+                                           "type": "gs-relatum",
+                                           "target": {
+                                               "variable": "w11:slm-Shelf",
+                                               "roles": [
+                                                   {
+                                                       "entity": "shelf"
+                                                   },
+                                                   {
+                                                       "type": "det",
+                                                       "target": "the"
+                                                   },
+                                                   {
+                                                       "type": "ident",
+                                                       "target": "specific"
+                                                   },
+                                                   {
+                                                       "type": "quant",
+                                                       "target": "singular"
+                                                   }
+                                               ]
+                                           }
+                                       }
+                                   ]
+                               }
+                           }
+                       }
+                   },
+                   {
+                       "type": "gum-actee",
+                       "target": {
+                           "variable": "w8:gum-ConsciousBeing",
+                           "roles": [
+                               {
+                                   "entity": "it"
+                               },
+                               {
+                                   "type": "number",
+                                   "target": "singular"
+                               },
+                               {
+                                   "type": "person",
+                                   "target": "third"
+                               }
+                           ]
+                       }
+                   },
+                   {
+                       "type": "gum-processInConfiguration",
+                       "target": {
+                           "variable": "w7:slm-Bringing",
+                           "roles": {
+                               "entity": "slm-Bringing"
+                           }
+                       }
+                   }
+               ]
+           }
+       }
+   ]
+}

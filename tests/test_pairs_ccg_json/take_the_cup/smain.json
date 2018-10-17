@@ -1,0 +1,49 @@
+{
+    "nominal": "x1:gum-OrientationChange",
+    "roles": [
+        {
+            "type": "mood",
+            "target": "imp"
+        },
+        [
+            {
+                "type": "gs-direction",
+                "target": {
+                    "variable": "x2:gs-GeneralizedLocation",
+                    "roles": {
+                        "type": "gs-hasSpatialModality",
+                        "target": {
+                            "variable": "w2:slm-Cup",
+                            "roles": [
+                                {
+                                    "entity": "cup"
+                                },
+                                {
+                                    "type": "det",
+                                    "target": "the"
+                                },
+                                {
+                                    "type": "ident",
+                                    "target": "specific"
+                                },
+                                {
+                                    "type": "quant",
+                                    "target": "singular"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            {
+                "type": "gum-processInConfiguration",
+                "target": {
+                    "variable": "w0:slm-Moving",
+                    "roles": {
+                        "entity": "slm-Taking"
+                    }
+                }
+            }
+        ]
+    ]
+}
