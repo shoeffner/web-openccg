@@ -55,7 +55,7 @@ role
     ;
 
 variable
-    = /[a-z]\d+(:[a-zA-Z\-]+)*/
+    = /[a-z]\d+(:[a-zA-Z\-]+)?/
     ;
 
 atom
