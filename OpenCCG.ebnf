@@ -16,13 +16,18 @@ term
     | '(' @:semspec ')'
     ;
 
+variable_string
+    = name:variable_name ':' ~ type:variable_type
+    | name:variable_name
+    ;
+
 variable::Variable
-    = name:variable_name roles:'^'.{ role }*
-    | '(' ~ name:variable_name roles:'^'.{ role }* ')'
+    = >variable_string roles:'^'.{ role }*
+    | '(' >variable_string roles:'^'.{ role }* ')'
     ;
 
 nominal::Nominal::Variable
-    = '@' ~ name:variable_name '(' ~ roles:'^'.{ role }* ')'
+    = '@' >variable_string '(' ~ roles:'^'.{ role }* ')'
     ;
 
 role::Role
@@ -32,7 +37,11 @@ role::Role
     ;
 
 variable_name::str
-    = /[a-z]\d+(:[a-zA-Z\-]+)?/
+    = /[a-z]\d+/
+    ;
+
+variable_type::str
+    = /[a-zA-Z\-]+/
     ;
 
 atom::str
