@@ -1,0 +1,142 @@
+{
+    "ccg": "(@x1:gs-AffectingDirectedMotion( <mood>imperative ^ <gs-route>x2 ^ <gum-actee>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular) ^ <gum-processInConfiguration>(w0:slm-Moving ^ slm-Taking)) ^ @x4:gs-SpatialLocating( <gs-locatum>w2:slm-Cup ^ <gs-placement>(x3:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w3:gs-DenialOfFunctionalControl ^ slm-Off) ^ <gs-relatum>(w5:slm-Table ^ slm-Table ^ <det>the ^ <ident>specific ^ <quant>singular))))",
+    "json": [
+        {
+            "__class__": "Nominal",
+            "roles": [
+                {
+                    "__class__": "Role",
+                    "target": "imperative",
+                    "type": "mood"
+                },
+                {
+                    "__class__": "Role",
+                    "target": {
+                        "__class__": "Variable",
+                        "roles": [
+                            {
+                                "__class__": "Role",
+                                "target": {
+                                    "__class__": "Variable",
+                                    "roles": [
+                                        {
+                                            "__class__": "Role",
+                                            "target": "cup",
+                                            "type": "entity"
+                                        },
+                                        {
+                                            "__class__": "Role",
+                                            "target": "the",
+                                            "type": "det"
+                                        },
+                                        {
+                                            "__class__": "Role",
+                                            "target": "specific",
+                                            "type": "ident"
+                                        },
+                                        {
+                                            "__class__": "Role",
+                                            "target": "singular",
+                                            "type": "quant"
+                                        }
+                                    ],
+                                    "name": "w2:slm-Cup"
+                                },
+                                "type": "gum-actee"
+                            },
+                            {
+                                "__class__": "Role",
+                                "target": {
+                                    "__class__": "Variable",
+                                    "roles": [
+                                        {
+                                            "__class__": "Role",
+                                            "target": "slm-Taking",
+                                            "type": "entity"
+                                        }
+                                    ],
+                                    "name": "w0:slm-Moving"
+                                },
+                                "type": "gum-processInConfiguration"
+                            }
+                        ],
+                        "name": "x2"
+                    },
+                    "type": "gs-route"
+                }
+            ],
+            "name": "x1:gs-AffectingDirectedMotion"
+        },
+        {
+            "__class__": "Nominal",
+            "roles": [
+                {
+                    "__class__": "Role",
+                    "target": {
+                        "__class__": "Variable",
+                        "roles": [
+                            {
+                                "__class__": "Role",
+                                "target": {
+                                    "__class__": "Variable",
+                                    "roles": [
+                                        {
+                                            "__class__": "Role",
+                                            "target": {
+                                                "__class__": "Variable",
+                                                "roles": [
+                                                    {
+                                                        "__class__": "Role",
+                                                        "target": "slm-Off",
+                                                        "type": "entity"
+                                                    }
+                                                ],
+                                                "name": "w3:gs-DenialOfFunctionalControl"
+                                            },
+                                            "type": "gs-hasSpatialModality"
+                                        },
+                                        {
+                                            "__class__": "Role",
+                                            "target": {
+                                                "__class__": "Variable",
+                                                "roles": [
+                                                    {
+                                                        "__class__": "Role",
+                                                        "target": "slm-Table",
+                                                        "type": "entity"
+                                                    },
+                                                    {
+                                                        "__class__": "Role",
+                                                        "target": "the",
+                                                        "type": "det"
+                                                    },
+                                                    {
+                                                        "__class__": "Role",
+                                                        "target": "specific",
+                                                        "type": "ident"
+                                                    },
+                                                    {
+                                                        "__class__": "Role",
+                                                        "target": "singular",
+                                                        "type": "quant"
+                                                    }
+                                                ],
+                                                "name": "w5:slm-Table"
+                                            },
+                                            "type": "gs-relatum"
+                                        }
+                                    ],
+                                    "name": "x3:gs-GeneralizedLocation"
+                                },
+                                "type": "gs-placement"
+                            }
+                        ],
+                        "name": "w2:slm-Cup"
+                    },
+                    "type": "gs-locatum"
+                }
+            ],
+            "name": "x4:gs-SpatialLocating"
+        }
+    ]
+}

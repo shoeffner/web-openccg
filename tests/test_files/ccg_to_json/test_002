@@ -1,0 +1,14 @@
+{
+    "ccg": "x0:slm-Cup ^ cup",
+    "json": {
+        "__class__": "Variable",
+        "roles": [
+            {
+                "__class__": "Role",
+                "target": "cup",
+                "type": "entity"
+            }
+        ],
+        "name": "x0:slm-Cup"
+    }
+}

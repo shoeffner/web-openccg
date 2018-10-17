@@ -1,0 +1,14 @@
+{
+    "ccg": "@x1:gum-OrientationChange(<mood>imp)",
+    "json": {
+        "__class__": "Nominal",
+        "roles": [
+            {
+                "__class__": "Role",
+                "target": "imp",
+                "type": "mood"
+            }
+        ],
+        "name": "x1:gum-OrientationChange"
+    }
+}

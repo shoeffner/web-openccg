@@ -1,0 +1,24 @@
+{
+    "ccg": "(w2:slm-Cup ^ <det>the ^ <ident>specific ^ <quant>singular)",
+    "json": {
+        "__class__": "Variable",
+        "name": "w2:slm-Cup",
+        "roles": [
+            {
+                "__class__": "Role",
+                "target": "the",
+                "type": "det"
+            },
+            {
+                "__class__": "Role",
+                "target": "specific",
+                "type": "ident"
+            },
+            {
+                "__class__": "Role",
+                "target": "singular",
+                "type": "quant"
+            }
+        ]
+    }
+}

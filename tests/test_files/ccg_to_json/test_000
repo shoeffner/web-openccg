@@ -1,0 +1,8 @@
+{
+    "ccg": "cup",
+    "json": {
+        "__class__": "Role",
+        "type": "entity",
+        "target": "cup"
+    }
+}

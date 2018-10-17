@@ -9,29 +9,23 @@ import os
 os.sys.path.append(Path(__file__).parent / '..' / 'app')
 
 
-import ccgparser
+import ccgparser  # noqa
 
 
 class CCGtoJSONTestCase(unittest.TestCase):
-
-    def setUp(self):
-        self.test_pairs_path = Path(os.path.dirname(__file__)) / 'test_pairs_ccg_json'
-        self.test_directories = list(self.test_pairs_path.glob('*'))
-        self.sentence_counter = 0
 
     def test_ccg_to_json(self):
         """
         Provides some example OpenCCG outputs and the expected JSON parses.
         """
-        for directory in self.test_directories:
-            with self.subTest(sentence=directory.name):
-                for ccg_file in directory.glob('*.ccg'):
-                    test_case = ccg_file.name
-                    with self.subTest(test_case=test_case):
-                        ccg = ccg_file.read_text()
-                        expected = json.loads(ccg_file.with_suffix('.json').read_text())
+        self.test_files = (Path(os.path.dirname(__file__))
+                           / 'test_files'
+                           / 'ccg_to_json').glob('*')
 
-                        actual = ccgparser.ccg_to_json(ccg)
+        for name, test_case in [(tf.name, json.loads(tf.read_text()))
+                                for tf in self.test_files]:
+            with self.subTest(test_case=name):
+                ccg = test_case['ccg']
+                expected = test_case['json']
 
-                        self.assertEqual(expected, actual)
-
+                self.assertEqual(expected, ccgparser.ccg_to_json(ccg))

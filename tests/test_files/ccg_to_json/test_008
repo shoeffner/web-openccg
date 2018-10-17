@@ -1,0 +1,69 @@
+{
+    "ccg": "@x1:gum-OrientationChange( <mood>imp ^ <gs-direction>(x2:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular)) ^ <gum-processInConfiguration>(w0:slm-Taking ^ slm-Taking))",
+    "json": {
+        "__class__": "Nominal",
+        "roles": [
+            {
+                "__class__": "Role",
+                "type": "mood",
+                "target": "imp"
+            },
+            {
+                "__class__": "Role",
+                "type": "gs-direction",
+                "target": {
+                    "__class__": "Variable",
+                    "roles": [
+                        {
+                            "__class__": "Role",
+                            "type": "gs-hasSpatialModality",
+                            "target": {
+                                "__class__": "Variable",
+                                "roles": [
+                                    {
+                                        "__class__": "Role",
+                                        "type": "entity",
+                                        "target": "cup"
+                                    },
+                                    {
+                                        "__class__": "Role",
+                                        "type": "det",
+                                        "target": "the"
+                                    },
+                                    {
+                                        "__class__": "Role",
+                                        "type": "ident",
+                                        "target": "specific"
+                                    },
+                                    {
+                                        "__class__": "Role",
+                                        "type": "quant",
+                                        "target": "singular"
+                                    }
+                                ],
+                                "name": "w2:slm-Cup"
+                            }
+                        }
+                    ],
+                    "name": "x2:gs-GeneralizedLocation"
+                }
+            },
+            {
+                "__class__": "Role",
+                "type": "gum-processInConfiguration",
+                "target": {
+                    "__class__": "Variable",
+                    "roles": [
+                        {
+                            "__class__": "Role",
+                            "type": "entity",
+                            "target": "slm-Taking"
+                        }
+                    ],
+                    "name": "w0:slm-Taking"
+                }
+            }
+        ],
+        "name": "x1:gum-OrientationChange"
+    }
+}
