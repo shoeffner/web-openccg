@@ -5,5 +5,12 @@ services:
 
     openccg:
         build: .
+
+    nginx:
+        build:
+            dockerfile: nginx/Dockerfile
+            context: .
         ports:
             - "80:80"
+        depends_on:
+            - openccg
