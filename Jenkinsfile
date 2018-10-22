@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        OPENCCG_NETWORK = 'litmus_default'
-        OPENCCG_EXTERNAL_PORT = '8081'
-    }
-
     stages {
         stage('build') {
             steps {
@@ -15,7 +10,7 @@ pipeline {
 
         stage('test') {
             steps {
-                sh 'docker run --rm -v "$(pwd)/app":/app -v "$(pwd)/tests":/tests web-openccg:$(git rev-parse --short HEAD) python3 -m unittest discover /tests'
+                sh 'docker run --rm -v "$(pwd)/tests":/tests web-openccg:$(git rev-parse --short HEAD) python3 -m unittest discover /tests'
             }
         }
 
