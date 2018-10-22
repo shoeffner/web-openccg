@@ -5,12 +5,12 @@ services:
 
     openccg:
         build: .
-
-    nginx:
-        build:
-            dockerfile: nginx/Dockerfile
-            context: .
         ports:
-            - "80:80"
-        depends_on:
-            - openccg
+            - "80:8080"
+        networks:
+            - external_network
+
+networks:
+    external_network:
+        external:
+            name: ${DOCKER_NETWORK:-web-openccg_default}
