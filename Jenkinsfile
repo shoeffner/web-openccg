@@ -30,7 +30,7 @@ pipeline {
 
         stage('deploy') {
             steps {
-                sh 'docker-compose up -d -p litmus'
+                sh 'docker-compose -p litmus up -d'
             }
             when {
                 branch 'master'
