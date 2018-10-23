@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh 'docker build . -t web-openccg:$(git rev-parse --short HEAD)'
+                sh 'docker build . --no-cache -t web-openccg:$(git rev-parse --short HEAD)'
             }
         }
 
@@ -25,7 +25,7 @@ pipeline {
 
         stage('deploy') {
             steps {
-                sh 'docker-compose -p litmus up -d --force-recreate'
+                sh 'docker-compose --project-name litmus up --detach --renew-anon-volumes --force-recreate'
             }
             when {
                 branch 'master'
@@ -40,3 +40,4 @@ pipeline {
         }
     }
 }
+
