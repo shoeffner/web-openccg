@@ -3,8 +3,8 @@ app/generated_openccg_parser.py: OpenCCG.ebnf
 
 .PHONY: run
 run:
-	docker-compose run --rm -p 5000:5000 -v $$(pwd)/app:/app openccg python3 /app/ccgapp.py
+	docker run --rm -p 5000:5000 -v $$(pwd)/app:/app:ro web-openccg python3 /app/ccgapp.py
 
 .PHONY: test
 test:
-	docker-compose run --rm -v $$(pwd)/app:/app -v $$(pwd)/tests:/tests openccg python3 -m unittest discover /tests
+	docker run --rm -v $$(pwd)/app:/app:ro -v $$(pwd)/tests:/tests:ro web-openccg python3 -m unittest discover /tests

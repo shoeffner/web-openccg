@@ -4,13 +4,13 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh 'docker-compose build . -t web-openccg:$(git rev-parse --short HEAD)'
+                sh 'docker build . -t web-openccg:$(git rev-parse --short HEAD)'
             }
         }
 
         stage('test') {
             steps {
-                sh 'docker-compose -p litmus run --rm -v $(pwd)/tests:/tests openccg python3 -m unittest discover /tests'
+                sh 'docker run --rm web-openccg:$(git rev-parse --short HEAD) python3 -m unittest discover /tests'
             }
         }
 

@@ -24,6 +24,7 @@ RUN curl -o openccg-0.9.5.tgz https://datapacket.dl.sourceforge.net/project/open
     && pip3 install flask uwsgi tatsu
 
 COPY app /app
+COPY tests /tests
 
 # Run Flask app behind nginx
 WORKDIR /app
