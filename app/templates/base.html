@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}Web OpenCCG{% endblock %}</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.0/mini-default.min.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {% block head %}
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+            <a href="{{ url_for('index') }}" class="logo">Web OpenCCG</a>
+            <a href="{{ url_for('use') }}" class="button">API</a>
+            <a href="https://github.com/shoeffner/web-openccg" class="button">Source</a>
+            <a href="http://openccg.sourceforge.net/" class="button">OpenCCG</a>
+        </header>
+
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <footer>
+            <a href="https://{{ request.environ['HTTP_HOST'] }}">Main</a>
+        </footer>
+    </body>
+</html>

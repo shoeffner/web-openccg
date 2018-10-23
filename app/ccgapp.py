@@ -51,18 +51,28 @@ def parse():
 
     # Get sentence from form field or use the first key.
     # The first key could be send e.g. by
-    #     curl --data "This is the sentence." 127.0.0.1:5000
+    #     curl --data "This is the sentence." 127.0.0.1:5000/parse
     sentence = request.form.get(key) or key
     response = create_response(sentence)
+
     return json.dumps(response), response['http_status']
+
+
+@app.route('/use')
+def use():
+    return render_template('use.html')
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     """This method shows a minimal user interface."""
-    sentence = request.form.get('sentence')
-    response = create_response(sentence)
-    response = json.dumps(response, indent=4)
+    if request.method == 'POST':
+        sentence = request.form.get('sentence')
+        response = create_response(sentence)
+        response = json.dumps(response, indent=4)
+    else:
+        sentence = None
+        response = None
     return render_template('form.html', sentence=sentence, response=response)
 
 

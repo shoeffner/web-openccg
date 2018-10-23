@@ -1,6 +1,7 @@
 # Web OpenCCG
 
-This repository builds a small [nginx](https://nginx.org/)-webserver and python wrapper around [OpenCCG](http://openccg.sourceforge.net/) using the [GUM-space ontology](http://www.diaspace.uni-bremen.de/cgi-bin/twiki/view/DiaSpace/ReSources.html), ready to run inside a [docker](https://www.docker.com/) container.
+This repository builds a thin python wrapper around [OpenCCG](http://openccg.sourceforge.net/) using the [GUM-space ontology](http://www.diaspace.uni-bremen.de/cgi-bin/twiki/view/DiaSpace/ReSources.html), ready to run inside a [docker](https://www.docker.com/) container.
+You can find a live version at [litmus.informatik.uni-bremen.de/openccg](https://litmus.informatik.uni-bremen.de/openccg).
 
 After an initial `docker-compose up`, the service can be queried using a simple POST request, e.g. using curl:
 

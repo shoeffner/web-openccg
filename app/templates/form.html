@@ -1,58 +1,72 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>OpenCCG Webinterface</title>
-        <!-- Script and style adapted from https://stackoverflow.com/a/7220510
-             written by user123444555621 -->
-        <script>
-            function syntaxHighlight(json) {
-                if (typeof json != 'string') {
-                    json = JSON.stringify(json, undefined, 2);
-                }
-                // json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-                    var cls = 'number';
-                    if (/^"/.test(match)) {
-                        if (/:$/.test(match)) {
-                            cls = 'key';
-                        } else {
-                            cls = 'string';
-                        }
-                    } else if (/true|false/.test(match)) {
-                        cls = 'boolean';
-                    } else if (/null/.test(match)) {
-                        cls = 'null';
+{% extends 'base.html' %}
+
+{% block head %}
+    {{ super() }}
+    <!-- Script and style adapted from https://stackoverflow.com/a/7220510
+            written by user123444555621 -->
+    <script>
+        function syntaxHighlight(json) {
+            if (typeof json != 'string') {
+                json = JSON.stringify(json, undefined, 2);
+            }
+            // json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
                     }
-                    return '<span class="' + cls + '">' + match + '</span>';
-                });
-            }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
 
-            function init_syntax() {
-                var pre = document.getElementById('response');
-                pre.innerHTML = syntaxHighlight(pre.innerHTML);
-            }
+        function init_syntax() {
+            var pre = document.getElementById('response');
+            pre.innerHTML = syntaxHighlight(pre.innerHTML);
+        }
 
-            window.onload = init_syntax;
-        </script>
-        <style>
-        pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
-        .string { color: forestgreen; }
-        .number { color: darkgoldenrod; }
-        .boolean { color: blue; }
-        .null { color: magenta; }
-        .key { color: maroon; }
-        </style>
-    </head>
-    <body>
-        OpenCCG Webinterface
-        <form action="/" method="POST">
-            <input type="text" name="sentence" value="{{ sentence or '' }}" style="width: 300px" />
-            <input type="submit" value="Go!" />
-        </form>
-        <div>
-            <pre id="response">
-{{ response }}
-            </pre>
-        </div>
-    </body>
-</html>
+        window.onload = init_syntax;
+    </script>
+    <style>
+        pre {
+            outline: 1px solid #ccc;
+            padding: 5px;
+            margin: 5px;
+        }
+        .string {
+            color: forestgreen;
+        }
+        .number {
+            color: darkgoldenrod;
+        }
+        .boolean {
+            color: blue;
+        }
+        .null {
+            color: magenta;
+        }
+        .key {
+            color: maroon;
+        }
+    </style>
+{% endblock head %}
+
+{% block content %}
+<form action="/" method="POST">
+    <div class="input-group fluid">
+        <input type="text" name="sentence" value="{{ sentence or '' }}" placeholder="Take the cup off the table." />
+        <input type="submit" value="Go!" />
+    </div>
+</form>
+
+<pre id="response">
+{{ response or '' }}
+</pre>
+{% endblock content %}
