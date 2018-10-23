@@ -25,7 +25,7 @@ pipeline {
 
         stage('deploy') {
             steps {
-                sh 'docker-compose -p litmus up -d'
+                sh 'docker-compose -p litmus up -d --force-recreate'
             }
             when {
                 branch 'master'
