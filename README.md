@@ -1,5 +1,7 @@
 # Web OpenCCG
 
+[![Build Status](https://litmus.informatik.uni-bremen.de/jenkins/job/Web%20OpenCCG/job/master/badge/icon)](https://litmus.informatik.uni-bremen.de/jenkins/job/Web%20OpenCCG/job/master/)
+
 This repository builds a thin python wrapper around [OpenCCG](http://openccg.sourceforge.net/) using the [GUM-space ontology](http://www.diaspace.uni-bremen.de/cgi-bin/twiki/view/DiaSpace/ReSources.html), ready to run inside a [docker](https://www.docker.com/) container.
 You can find a live version at [litmus.informatik.uni-bremen.de/openccg](https://litmus.informatik.uni-bremen.de/openccg).
 
