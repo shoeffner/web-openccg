@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        APPLICATION_ROOT = '/openccg'
+    }
+
     stages {
         stage('build') {
             steps {

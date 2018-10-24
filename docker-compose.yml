@@ -5,3 +5,5 @@ services:
 
     openccg:
         build: .
+        environment:
+            - APPLICATION_ROOT=${APPLICATION_ROOT:-/}
