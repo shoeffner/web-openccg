@@ -6,7 +6,6 @@ from flask import Flask, render_template, request, redirect
 from werkzeug.wsgi import DispatcherMiddleware
 
 import wccg
-import graphs
 
 
 def create_redirecting_app(to):
