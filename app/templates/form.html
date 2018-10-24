@@ -32,7 +32,7 @@
             pre.innerHTML = syntaxHighlight(pre.innerHTML);
         }
 
-        window.onload = init_syntax;
+        window.addEventListener('load', init_syntax);
     </script>
     <style>
         pre {
@@ -56,17 +56,79 @@
             color: maroon;
         }
     </style>
+    <script src="{{ url_for('static', filename='viz.js') }}"></script>
+    <script src="{{ url_for('static', filename='lite.render.js') }}"></script>
+    <script>
+        function add_graph(graph_element, key) {
+            var graph = document.getElementById('graphs');
+
+            var card = document.createElement('div');
+            card.className = 'card small';
+
+            var title = document.createElement('div');
+            title.className = 'section';
+            title.innerHTML = '<h3>' + key + '</h3>';
+
+            var graph_section = document.createElement('div');
+            graph_section.className = 'section';
+
+            card.appendChild(title);
+            card.appendChild(graph_section);
+            graph_section.appendChild(graph_element);
+            graph.appendChild(card);
+        }
+
+        function handle_submit(evt) {
+            evt.preventDefault();
+            document.getElementById('response').innerHTML = '<div class="spinner secondary"></div>';
+            document.getElementById('graphs').innerHTML = '<div class="spinner secondary"></div>';
+
+            fetch(evt.target.action, {method: 'POST', body: new FormData(evt.target)})
+                .then(r => r.json())
+                .then(r => {
+                    document.getElementById('response').innerHTML = syntaxHighlight(JSON.stringify(r, null, 4));
+                    return r;
+                })
+                .then(r => {
+                    var viz = new Viz();
+                    var graphs = r['graphs'];
+                    document.getElementById('graphs').innerHTML = '';
+                    for (let key in graphs) {
+                        viz.renderSVGElement(graphs[key]).then(e => add_graph(e, key));
+                    }
+                });
+        }
+
+        function init() {
+            document.getElementById('sentenceform').addEventListener('submit', handle_submit);
+        }
+
+        window.addEventListener('load', init);
+    </script>
 {% endblock head %}
 
 {% block content %}
-<form action="{{ url_for('openccg.index') }}" method="POST">
-    <div class="input-group fluid">
-        <input type="text" name="sentence" value="{{ sentence or '' }}" placeholder="Take the cup off the table." />
-        <input type="submit" value="Go!" />
-    </div>
-</form>
+<div class="container">
+    <form action="{{ url_for('openccg.parse') }}" method="POST" id="sentenceform">
+        <div class="input-group fluid">
+            <input type="text" name="sentence" value="{{ sentence or '' }}" placeholder="Take the cup off the table." />
+            <input type="submit" value="Go!" />
+        </div>
+    </form>
+</div>
 
-<pre id="response">
-{{ response or '' }}
-</pre>
+<div class="collapse">
+    <input type="checkbox" id="result-section1" aria-hidden="true" />
+    <label for="result-section1" aria-hidden="true">JSON response</label>
+    <div>
+        <pre id="response">
+        {{ response or '' }}
+        </pre>
+    </div>
+
+    <input type="checkbox" id="result-section2" checked aria-hidden="true" />
+    <label for="result-section2" aria-hidden="true">Graphs</label>
+    <div id="graphs" class="row">
+    </div>
+</div>
 {% endblock content %}

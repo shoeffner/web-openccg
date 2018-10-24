@@ -1,13 +1,14 @@
 import json
-import os
 import uuid
 
 from flask import Blueprint, Flask, render_template, request, redirect
 
+import graphs
 import wccg
 
 
-bp = Blueprint('openccg', __name__, template_folder='templates')
+bp = Blueprint('openccg', __name__,
+               template_folder='templates')
 
 
 def create_response(sentence):
@@ -29,6 +30,10 @@ def create_response(sentence):
         'uuid': str(uuid.uuid4())
     }
     response.update(content)
+    try:
+        response.update(graphs.create_graphs(content['json_parses']))
+    except KeyError:
+        pass
 
     return response
 
