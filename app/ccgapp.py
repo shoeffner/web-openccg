@@ -2,49 +2,12 @@ import json
 import os
 import uuid
 
-from flask import Flask, render_template, request, redirect
-from werkzeug.wsgi import DispatcherMiddleware
+from flask import Blueprint, Flask, render_template, request, redirect
 
 import wccg
 
 
-def create_redirecting_app(to):
-    """Creates a dummy flask app which redirects to 'to' for the root url."""
-    app = Flask('redirector')
-
-    @app.route('/')
-    def index():
-        return redirect(to, code=301)
-
-    return app
-
-
-def create_app():
-    """Initializes the Flask app.
-
-    Reads the environment variable APPLICATION_ROOT and creates a
-    DispatcherMiddleware if it is set to something different than /.
-    This allows to mount the app in a subdirectory.
-    """
-    app = Flask(__name__)
-    app.config['APPLICATION_ROOT'] = os.environ.get('APPLICATION_ROOT', '/')
-
-    if app.config['APPLICATION_ROOT'] != '/':
-        if app.config['APPLICATION_ROOT'].endswith('/'):
-            app.config['APPLICATION_ROOT'] = app.config['APPLICATION_ROOT'][:-1]
-
-        redirector = create_redirecting_app(app.config['APPLICATION_ROOT'])
-        mounts = {
-            app.config['APPLICATION_ROOT']: app.wsgi_app
-        }
-        app.wsgi_app = DispatcherMiddleware(redirector, mounts)
-
-    app.logger.info('APPLICATION_ROOT=%s', app.config['APPLICATION_ROOT'])
-
-    return app
-
-
-app = create_app()
+bp = Blueprint('openccg', __name__, template_folder='templates')
 
 
 def create_response(sentence):
@@ -66,12 +29,11 @@ def create_response(sentence):
         'uuid': str(uuid.uuid4())
     }
     response.update(content)
-    response.update(graphs.create_graphs(response['json_parses']))
 
     return response
 
 
-@app.route('/parse', methods=['POST'])
+@bp.route('/parse', methods=['POST'])
 def parse():
     """Handles parse requests.
 
@@ -98,12 +60,12 @@ def parse():
     return json.dumps(response), response['http_status']
 
 
-@app.route('/use')
+@bp.route('/use')
 def use():
     return render_template('use.html')
 
 
-@app.route('/', methods=['GET', 'POST'])
+@bp.route('/', methods=['GET', 'POST'])
 def index():
     """This method shows a minimal user interface."""
     if request.method == 'POST':
@@ -114,6 +76,17 @@ def index():
         sentence = None
         response = None
     return render_template('form.html', sentence=sentence, response=response)
+
+
+app = Flask(__name__)
+
+
+@app.route('/')
+def redirect_to_blueprint():
+    return redirect('openccg', 301)
+
+
+app.register_blueprint(bp, url_prefix='/openccg')
 
 
 if __name__ == '__main__':

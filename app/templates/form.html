@@ -59,7 +59,7 @@
 {% endblock head %}
 
 {% block content %}
-<form action="{{ url_for('index') }}" method="POST">
+<form action="{{ url_for('openccg.index') }}" method="POST">
     <div class="input-group fluid">
         <input type="text" name="sentence" value="{{ sentence or '' }}" placeholder="Take the cup off the table." />
         <input type="submit" value="Go!" />
