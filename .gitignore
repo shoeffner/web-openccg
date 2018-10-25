@@ -2,6 +2,9 @@
 app/static/viz.js
 app/static/lite.render.js
 
+# Vim session
+*.vim
+
 # Created by https://www.gitignore.io/api/python
 
 ### Python ###
