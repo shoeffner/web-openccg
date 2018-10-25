@@ -3,5 +3,5 @@
 {% block content %}
 <p>Web OpenCCG is a wrapper around OpenCCG's <a href="https://github.com/OpenCCG/openccg/blob/master/src/opennlp/ccg/WebCCG.java">WebCCG</a>.</p>
 
-<p>Currently, no specific usage instructions are specified on this website, but you can take a look at the <a href="https://github.com/shoeffner/web-openccg/tree/master/README.md">README.md</a> for an overview. Just remember to replace all localhost URLs with https://{{ request.environ['HTTP_HOST'] }}/parse.</p>
+<p>Currently, no specific usage instructions are specified on this website, but you can take a look at the <a href="https://github.com/shoeffner/web-openccg/tree/master/README.md">README.md</a> for an overview. Just remember to replace all localhost URLs with {{ url_for('openccg.index', _external=True) }}.</p>
 {% endblock content %}
