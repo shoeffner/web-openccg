@@ -2,107 +2,14 @@
 
 {% block head %}
     {{ super() }}
-    <!-- Script and style adapted from https://stackoverflow.com/a/7220510
-            written by user123444555621 -->
-    <script>
-        function syntaxHighlight(json) {
-            if (typeof json != 'string') {
-                json = JSON.stringify(json, undefined, 2);
-            }
-            // json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-                var cls = 'number';
-                if (/^"/.test(match)) {
-                    if (/:$/.test(match)) {
-                        cls = 'key';
-                    } else {
-                        cls = 'string';
-                    }
-                } else if (/true|false/.test(match)) {
-                    cls = 'boolean';
-                } else if (/null/.test(match)) {
-                    cls = 'null';
-                }
-                return '<span class="' + cls + '">' + match + '</span>';
-            });
-        }
-
-        function init_syntax() {
-            var pre = document.getElementById('response');
-            pre.innerHTML = syntaxHighlight(pre.innerHTML);
-        }
-
-        window.addEventListener('load', init_syntax);
-    </script>
-    <style>
-        pre {
-            outline: 1px solid #ccc;
-            padding: 5px;
-            margin: 5px;
-        }
-        .string {
-            color: forestgreen;
-        }
-        .number {
-            color: darkgoldenrod;
-        }
-        .boolean {
-            color: blue;
-        }
-        .null {
-            color: magenta;
-        }
-        .key {
-            color: maroon;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='openccg.css') }}" />
     <script src="{{ url_for('static', filename='viz.js') }}"></script>
     <script src="{{ url_for('static', filename='lite.render.js') }}"></script>
+    <script src="{{ url_for('static', filename='openccg.js') }}"></script>
     <script>
-        function add_graph(graph_element, key) {
-            var graph = document.getElementById('graphs');
-
-            var card = document.createElement('div');
-            card.className = 'card small';
-
-            var title = document.createElement('div');
-            title.className = 'section';
-            title.innerHTML = '<h3>' + key + '</h3>';
-
-            var graph_section = document.createElement('div');
-            graph_section.className = 'section';
-
-            card.appendChild(title);
-            card.appendChild(graph_section);
-            graph_section.appendChild(graph_element);
-            graph.appendChild(card);
-        }
-
-        function handle_submit(evt) {
-            evt.preventDefault();
-            document.getElementById('response').innerHTML = '<div class="spinner secondary"></div>';
-            document.getElementById('graphs').innerHTML = '<div class="spinner secondary"></div>';
-
-            fetch(evt.target.action, {method: 'POST', body: new FormData(evt.target)})
-                .then(r => r.json())
-                .then(r => {
-                    document.getElementById('response').innerHTML = syntaxHighlight(JSON.stringify(r, null, 4));
-                    return r;
-                })
-                .then(r => {
-                    var viz = new Viz();
-                    var graphs = r['graphs'];
-                    document.getElementById('graphs').innerHTML = '';
-                    for (let key in graphs) {
-                        viz.renderSVGElement(graphs[key]).then(e => add_graph(e, key));
-                    }
-                });
-        }
-
         function init() {
             document.getElementById('sentenceform').addEventListener('submit', handle_submit);
         }
-
         window.addEventListener('load', init);
     </script>
 {% endblock head %}

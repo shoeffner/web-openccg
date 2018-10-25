@@ -1,0 +1,20 @@
+/*pre {
+    outline: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px;
+}*/
+pre .string {
+    color: forestgreen;
+}
+pre .number {
+    color: darkgoldenrod;
+}
+pre .boolean {
+    color: blue;
+}
+pre .null {
+    color: magenta;
+}
+pre .key {
+    color: maroon;
+}
