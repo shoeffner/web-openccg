@@ -45,5 +45,5 @@ variable_type::str
     ;
 
 atom::str
-    = /[a-zA-Z\-\.]+/
+    = /[a-zA-Z\-\._]+/
     ;

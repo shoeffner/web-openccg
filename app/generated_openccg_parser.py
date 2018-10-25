@@ -262,7 +262,7 @@ class OpenCCGParser(Parser):
 
     @tatsumasu('str')
     def _atom_(self):  # noqa
-        self._pattern(r'[a-zA-Z\-\.]+')
+        self._pattern(r'[a-zA-Z\-\._]+')
 
 
 class OpenCCGSemantics(object):
