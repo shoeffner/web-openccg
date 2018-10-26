@@ -25,10 +25,12 @@ RUN curl -o openccg-0.9.5.tgz https://datapacket.dl.sourceforge.net/project/open
                     tatsu \
                     pygraphviz
 
-
 COPY app /app
-ADD https://github.com/mdaines/viz.js/releases/download/v2.0.0/viz.js https://github.com/mdaines/viz.js/releases/download/v2.0.0/lite.render.js /app/static/
 COPY tests /tests
+
+ADD https://github.com/mdaines/viz.js/releases/download/v2.0.0/viz.js \
+    https://github.com/mdaines/viz.js/releases/download/v2.0.0/lite.render.js \
+    /app/static/
 
 # Run Flask app behind nginx
 WORKDIR /app
