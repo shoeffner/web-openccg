@@ -34,7 +34,7 @@ function add_graph(graph_element, title) {
     var graph = document.getElementById('graphs');
 
     var card = document.createElement('div');
-    card.className = 'card small';
+    card.className = 'card fluid';
 
     var title_elem = document.createElement('div');
     title_elem.className = 'section';

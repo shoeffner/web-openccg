@@ -5,6 +5,9 @@ app/static/lite.render.js
 # Vim session
 *.vim
 
+# VS Code
+.vscode
+
 # Created by https://www.gitignore.io/api/python
 
 ### Python ###
@@ -137,3 +140,4 @@ pip-selfcheck.json
 
 
 # End of https://www.gitignore.io/api/python
+
