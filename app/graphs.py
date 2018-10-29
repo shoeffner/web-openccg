@@ -1,5 +1,6 @@
 import pygraphviz as pgv
 
+
 nominal_style = {
     'style': 'filled',
     'fillcolor': '#bc8f8f'
@@ -25,6 +26,10 @@ def role_string(role):
     return f"&lt;{role['type']}&gt; {role['target']}"
 
 
+def relation_string(role):
+    return f"{role['type']}"
+
+
 def variable_string(variable):
     return f"{variable['name']}: {variable['type']}"
 
@@ -36,7 +41,9 @@ def handle_nominal(tree, graph):
 
 
 def handle_variable(tree, graph):
-    graph.add_node(tree['name'], shape='Mrecord', **property_style)
+    graph.add_node(tree['name'], shape='Mrecord',
+                   label=variable_string(tree),
+                   **property_style)
     sg = graph.add_subgraph(tree['name'],
                             name=f"cluster_{tree['name']}",
                             label=variable_string(tree),
@@ -47,10 +54,10 @@ def handle_variable(tree, graph):
         if isinstance(role['target'], str):
             attributes.append(role_string(role))
         elif isinstance(role['target'], dict):
-            sg.add_node(role['type'])
+            sg.add_node(role['type'], label=relation_string(role))
             role_sg = sg.add_subgraph(role['type'],
                                       name=f"cluster_{role['type']}",
-                                      label=role['type'],
+                                      label=relation_string(role),
                                       **relation_style)
 
             handle_variable(role['target'], role_sg)
@@ -67,8 +74,9 @@ def handle_variable(tree, graph):
             sg.delete_node(tree['name'])
             sg = sg.subgraph_parent()
         if not len(tree['roles']):
-            graph.add_node(tree['name'], shape='box', label=variable_string(tree),
-                        **variable_style)
+            graph.add_node(tree['name'], shape='box',
+                           label=variable_string(tree),
+                           **variable_style)
 
 
 def handle_role(tree, graph):
@@ -79,7 +87,8 @@ def handle_role(tree, graph):
                        **property_style)
     if isinstance(tree['target'], dict):
         # Relation
-        graph.add_node(tree['name'], shape='Mrecord', **relation_style)
+        graph.add_node(tree['name'], shape='Mrecord',
+                       **relation_style)
 
 
 def walk(tree, graph):
