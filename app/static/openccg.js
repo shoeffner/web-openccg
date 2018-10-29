@@ -31,22 +31,13 @@ const viz = new Viz();
  * #graphs element.
  * graph_element is the element returned by Viz's drawing call, title is a title to use. */
 function add_graph(graph_element, title) {
-    var graph = document.getElementById('graphs');
+    var graphs = document.getElementById('graphs');
 
-    var card = document.createElement('div');
-    card.className = 'card fluid';
+    var caption = document.createElement('h3');
+    caption.innerHTML = title;
 
-    var title_elem = document.createElement('div');
-    title_elem.className = 'section';
-    title_elem.innerHTML = '<h3>' + title + '</h3>';
-
-    var graph_section = document.createElement('div');
-    graph_section.className = 'section';
-
-    card.appendChild(title_elem);
-    card.appendChild(graph_section);
-    graph_section.appendChild(graph_element);
-    graph.appendChild(card);
+    graphs.appendChild(caption);
+    graphs.appendChild(graph_element);
 }
 
 /* Should be used as an event listener on the input form. Fetches the result and makes sure

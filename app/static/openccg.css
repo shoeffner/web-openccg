@@ -13,3 +13,13 @@ pre .null {
 pre .key {
     color: maroon;
 }
+
+
+/* Overwrite settings of mini.css */
+#graphs {
+    max-height: 1000px;
+}
+
+#graphs svg {
+    margin-top: -100px;
+}

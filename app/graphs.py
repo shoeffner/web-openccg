@@ -3,22 +3,22 @@ import pygraphviz as pgv
 
 nominal_style = {
     'style': 'filled',
-    'fillcolor': '#bc8f8f'
+    'fillcolor': 'lightskyblue'
 }
 
 variable_style = {
     'style': 'filled',
-    'fillcolor': '#deb887',
+    'fillcolor': 'lightblue',
 }
 
 relation_style = {
     'style': 'filled',
-    'fillcolor': '#dda0dd'
+    'fillcolor': 'honeydew'
 }
 
 property_style = {
     'style': 'filled',
-    'fillcolor': '#dfdfdf'
+    'fillcolor': 'aliceblue'
 }
 
 
@@ -31,7 +31,10 @@ def relation_string(role):
 
 
 def variable_string(variable):
-    return f"{variable['name']}: {variable['type']}"
+    if variable['type']:
+        return f"{variable['name']}: {variable['type']}"
+    else:
+        variable['name']
 
 
 def handle_nominal(tree, graph):
