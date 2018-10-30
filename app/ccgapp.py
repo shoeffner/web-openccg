@@ -51,10 +51,13 @@ def parse():
     if request.method == 'GET':
         return json.dumps(dict(error="Use POST.", http_status=501)), 501
 
-    try:
-        key = next(request.values.keys())
-    except StopIteration:
-        key = None
+    if 'sentence' not in request.values:
+        try:
+            key = next(request.values.keys())
+        except StopIteration:
+            key = None
+    else:
+        key = 'sentence'
 
     # Get sentence from form field or use the first key.
     # The first key could be send e.g. by
