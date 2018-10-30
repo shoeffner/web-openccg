@@ -19,7 +19,3 @@ pre .key {
 #graphs {
     max-height: 1000px;
 }
-
-#graphs svg {
-    margin-top: -100px;
-}

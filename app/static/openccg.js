@@ -32,12 +32,16 @@ const viz = new Viz();
  * graph_element is the element returned by Viz's drawing call, title is a title to use. */
 function add_graph(graph_element, title) {
     var graphs = document.getElementById('graphs');
+    var container = document.createElement('div');
+    container.className = 'container';
 
     var caption = document.createElement('h3');
     caption.innerHTML = title;
 
-    graphs.appendChild(caption);
-    graphs.appendChild(graph_element);
+    container.appendChild(caption);
+    container.appendChild(graph_element);
+
+    graphs.appendChild(container);
 }
 
 /* Should be used as an event listener on the input form. Fetches the result and makes sure
@@ -52,7 +56,9 @@ function handle_submit(evt) {
     response.innerHTML = '<div class="spinner secondary"></div>';
     graphs.innerHTML = '<div class="spinner secondary"></div>';
 
-    fetch(evt.target.action, { method: 'POST', body: new FormData(evt.target) })
+    var data = new FormData(evt.target);
+
+    fetch(evt.target.action, { method: 'POST', body: data })
         .then(r => r.json())
         .then(r => {
             response.innerHTML = syntaxHighlight(JSON.stringify(r, null, 4));
@@ -62,8 +68,35 @@ function handle_submit(evt) {
             graphs.innerHTML = '';
 
             var graphsJSON = r['graphs'];
+            var render = viz.renderSVGElement;
+            switch (data.get('engine')) {
+                case 'img':
+                    render = viz.renderImageElement;
+                    break;
+                case 'dot':
+                    render = function(str) {
+                        return new Promise((resolve, reject) => {
+                            var pre = document.createElement('pre');
+                            pre.innerHTML = str;
+                            resolve(pre);
+                        });
+                    }
+                    break;
+                case 'json':
+                    render = function(str) {
+                        return viz.renderJSONObject(str).then(e => {
+                            var pre = document.createElement('pre');
+                            pre.innerHTML = syntaxHighlight(e);
+                            return pre;
+                        });
+                    }
+                    break;
+                case 'svg':
+                default:
+                    render = viz.renderSVGElement;
+            }
             for (let key in graphsJSON) {
-                viz.renderSVGElement(graphsJSON[key]).then(e => add_graph(e, key));
+                render.call(viz, graphsJSON[key]).then(e => add_graph(e, key));
             }
 
             return r;

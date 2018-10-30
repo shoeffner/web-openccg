@@ -17,10 +17,22 @@
 {% block content %}
 <div class="container">
     <form action="{{ url_for('openccg.parse') }}" method="POST" id="sentenceform">
-        <div class="input-group fluid">
-            <input type="text" name="sentence" value="{{ sentence or '' }}" placeholder="Take the cup off the table." />
-            <input type="submit" value="Go!" />
-        </div>
+        <fieldset>
+            <legend>Sentence</legend>
+            <div class="input-group fluid">
+                <input type="text" name="sentence" value="Take the cup off the table." placeholder="Take the cup off the table." />
+            </div>
+            <div class="input-group">
+                <label for="engine">Render engine</label>
+                <select id="engine" name="engine">
+                    <option value="svg">SVG</option>
+                    <option value="img" selected>Image</option>
+                    <option value="dot">Dot</option>
+                    <option value="json">JSON</option>
+                </select>
+                <input type="submit" value="Go!" />
+            </div>
+        </fieldset>
     </form>
 </div>
 
