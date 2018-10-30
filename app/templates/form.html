@@ -2,10 +2,10 @@
 
 {% block head %}
     {{ super() }}
-    <link rel="stylesheet" href="{{ url_for('static', filename='openccg.css') }}" />
-    <script src="{{ url_for('static', filename='viz.js') }}"></script>
-    <script src="{{ url_for('static', filename='lite.render.js') }}"></script>
-    <script src="{{ url_for('static', filename='openccg.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('openccg.static', filename='openccg.css') }}" />
+    <script src="{{ url_for('openccg.static', filename='viz.js') }}"></script>
+    <script src="{{ url_for('openccg.static', filename='lite.render.js') }}"></script>
+    <script src="{{ url_for('openccg.static', filename='openccg.js') }}"></script>
     <script>
         function init() {
             document.getElementById('sentenceform').addEventListener('submit', handle_submit);
