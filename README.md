@@ -63,8 +63,9 @@ If a sentence was provided during the request, these fields are present:
 If at least one successful parse exists, the these fields are included:
 - `parses`: A dictionary of parse-identifiers (e.g. "np") to actual parses as OpenCCG outputs them.
 - `json_parses`: A version of the OpenCCG outputs in a flat JSON. This is produced via a custom grammar for [TatSu](https://github.com/neogeny/TatSu). For details see [below](#json-format)
+- `graphs`: A dictionary of parse-identifiers to dot-strings. They can be rendered using graphviz -- the [online GUI](https://litmus.informatik.uni-bremen.de/openccg) renders these automatically.
 
-*Note:* The keys are shared between `parses` and `json_parses`, thus you can easily lookup the original output for a JSON parse and vice-versa.
+*Note:* The keys are shared between `parses`, `json_parses`, and `graphs`, thus you can easily lookup the original output for a JSON parse and vice-versa.
 
 If an error occurs, the error field is present:
 - `error`: An error description.
@@ -124,7 +125,7 @@ It follows a very similar structure:
 - `target`: The value of the role. This can be multiple different things, see below.
 
 If the type is `entity`, the target will be an instance, like "cup" or "slm-Taking".
-If the type has a prefix followed by a dash, e.g. `gs-hasSpatialModality` or `gs-direction`, then the target will be a `Variable`.
+If the type has a prefix followed by a dash, e.g. `gs-hasSpatialModality` or `gs-direction`, then the target will be a `Variable`; in owl this would be an ObjectProperty.
 If the type is any other string, the target will be an atomic string, e.g. the type `det` can have the target `the`, while the type `quant` can have the target `singular`.
 
 
@@ -163,9 +164,9 @@ An example response for the sentence "Take the cup." is:
 
 ```json
 {
-    "version": "2.1.0",
+    "version": "2.2.0",
     "application": "web-openccg",
-    "uuid": "14409a2a-d114-4c92-8cf9-56a509efd07f",
+    "uuid": "ecae8222-af9b-4185-a508-efa8be33c7e6",
     "sentence": "take the cup",
     "parses": {
         "smain": "@x1:gum-OrientationChange( <mood>imp ^ <gs-direction>(x2:gs-GeneralizedLocation ^ <gs-hasSpatialModality>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular)) ^ <gum-processInConfiguration>(w0:slm-Moving ^ slm-Taking))",
@@ -177,284 +178,294 @@ An example response for the sentence "Take the cup." is:
     "json_parses": {
         "smain": {
             "__class__": "Nominal",
+            "type": "gum-OrientationChange",
             "name": "x1",
             "roles": [
                 {
                     "__class__": "Role",
-                    "target": "imp",
-                    "type": "mood"
+                    "type": "mood",
+                    "target": "imp"
                 },
                 {
                     "__class__": "Role",
+                    "type": "gs-direction",
                     "target": {
                         "__class__": "Variable",
+                        "type": "gs-GeneralizedLocation",
                         "name": "x2",
                         "roles": [
                             {
                                 "__class__": "Role",
+                                "type": "gs-hasSpatialModality",
                                 "target": {
                                     "__class__": "Variable",
+                                    "type": "slm-Cup",
                                     "name": "w2",
                                     "roles": [
                                         {
                                             "__class__": "Role",
-                                            "target": "cup",
-                                            "type": "entity"
+                                            "type": "entity",
+                                            "target": "cup"
                                         },
                                         {
                                             "__class__": "Role",
-                                            "target": "the",
-                                            "type": "det"
+                                            "type": "det",
+                                            "target": "the"
                                         },
                                         {
                                             "__class__": "Role",
-                                            "target": "specific",
-                                            "type": "ident"
+                                            "type": "ident",
+                                            "target": "specific"
                                         },
                                         {
                                             "__class__": "Role",
-                                            "target": "singular",
-                                            "type": "quant"
+                                            "type": "quant",
+                                            "target": "singular"
                                         }
-                                    ],
-                                    "type": "slm-Cup"
-                                },
-                                "type": "gs-hasSpatialModality"
+                                    ]
+                                }
                             }
-                        ],
-                        "type": "gs-GeneralizedLocation"
-                    },
-                    "type": "gs-direction"
+                        ]
+                    }
                 },
                 {
                     "__class__": "Role",
+                    "type": "gum-processInConfiguration",
                     "target": {
                         "__class__": "Variable",
+                        "type": "slm-Moving",
                         "name": "w0",
                         "roles": [
                             {
                                 "__class__": "Role",
-                                "target": "slm-Taking",
-                                "type": "entity"
+                                "type": "entity",
+                                "target": "slm-Taking"
                             }
-                        ],
-                        "type": "slm-Moving"
-                    },
-                    "type": "gum-processInConfiguration"
+                        ]
+                    }
                 }
-            ],
-            "type": "gum-OrientationChange"
+            ]
         },
         "smain/0": {
             "__class__": "Nominal",
+            "type": "gum-OrientationChange",
             "name": "x1",
             "roles": [
                 {
                     "__class__": "Role",
-                    "target": "imp",
-                    "type": "mood"
+                    "type": "mood",
+                    "target": "imp"
                 },
                 {
                     "__class__": "Role",
+                    "type": "gs-direction",
                     "target": {
                         "__class__": "Variable",
+                        "type": "gs-GeneralizedLocation",
                         "name": "x2",
                         "roles": [
                             {
                                 "__class__": "Role",
+                                "type": "gs-hasSpatialModality",
                                 "target": {
                                     "__class__": "Variable",
+                                    "type": "slm-Cup",
                                     "name": "w2",
                                     "roles": [
                                         {
                                             "__class__": "Role",
-                                            "target": "cup",
-                                            "type": "entity"
+                                            "type": "entity",
+                                            "target": "cup"
                                         },
                                         {
                                             "__class__": "Role",
-                                            "target": "the",
-                                            "type": "det"
+                                            "type": "det",
+                                            "target": "the"
                                         },
                                         {
                                             "__class__": "Role",
-                                            "target": "specific",
-                                            "type": "ident"
+                                            "type": "ident",
+                                            "target": "specific"
                                         },
                                         {
                                             "__class__": "Role",
-                                            "target": "singular",
-                                            "type": "quant"
+                                            "type": "quant",
+                                            "target": "singular"
                                         }
-                                    ],
-                                    "type": "slm-Cup"
-                                },
-                                "type": "gs-hasSpatialModality"
+                                    ]
+                                }
                             }
-                        ],
-                        "type": "gs-GeneralizedLocation"
-                    },
-                    "type": "gs-direction"
+                        ]
+                    }
                 },
                 {
                     "__class__": "Role",
+                    "type": "gum-processInConfiguration",
                     "target": {
                         "__class__": "Variable",
+                        "type": "slm-Taking",
                         "name": "w0",
                         "roles": [
                             {
                                 "__class__": "Role",
-                                "target": "slm-Taking",
-                                "type": "entity"
+                                "type": "entity",
+                                "target": "slm-Taking"
                             }
-                        ],
-                        "type": "slm-Taking"
-                    },
-                    "type": "gum-processInConfiguration"
+                        ]
+                    }
                 }
-            ],
-            "type": "gum-OrientationChange"
+            ]
         },
         "smain/.r": {
             "__class__": "Nominal",
+            "type": "gs-AffectingDirectedMotion",
             "name": "x1",
             "roles": [
                 {
                     "__class__": "Role",
-                    "target": "imperative",
-                    "type": "mood"
+                    "type": "mood",
+                    "target": "imperative"
                 },
                 {
                     "__class__": "Role",
+                    "type": "gs-route",
                     "target": {
                         "__class__": "Variable",
+                        "type": null,
                         "name": "x2",
                         "roles": [
                             {
                                 "__class__": "Role",
+                                "type": "gum-actee",
                                 "target": {
                                     "__class__": "Variable",
+                                    "type": "slm-Cup",
                                     "name": "w2",
                                     "roles": [
                                         {
                                             "__class__": "Role",
-                                            "target": "cup",
-                                            "type": "entity"
+                                            "type": "entity",
+                                            "target": "cup"
                                         },
                                         {
                                             "__class__": "Role",
-                                            "target": "the",
-                                            "type": "det"
+                                            "type": "det",
+                                            "target": "the"
                                         },
                                         {
                                             "__class__": "Role",
-                                            "target": "specific",
-                                            "type": "ident"
+                                            "type": "ident",
+                                            "target": "specific"
                                         },
                                         {
                                             "__class__": "Role",
-                                            "target": "singular",
-                                            "type": "quant"
+                                            "type": "quant",
+                                            "target": "singular"
                                         }
-                                    ],
-                                    "type": "slm-Cup"
-                                },
-                                "type": "gum-actee"
+                                    ]
+                                }
                             },
                             {
                                 "__class__": "Role",
+                                "type": "gum-processInConfiguration",
                                 "target": {
                                     "__class__": "Variable",
+                                    "type": "slm-Moving",
                                     "name": "w0",
                                     "roles": [
                                         {
                                             "__class__": "Role",
-                                            "target": "slm-Taking",
-                                            "type": "entity"
+                                            "type": "entity",
+                                            "target": "slm-Taking"
                                         }
-                                    ],
-                                    "type": "slm-Moving"
-                                },
-                                "type": "gum-processInConfiguration"
+                                    ]
+                                }
                             }
-                        ],
-                        "type": null
-                    },
-                    "type": "gs-route"
+                        ]
+                    }
                 }
-            ],
-            "type": "gs-AffectingDirectedMotion"
+            ]
         },
         "smain/.r/0": {
             "__class__": "Nominal",
+            "type": "gs-AffectingDirectedMotion",
             "name": "x1",
             "roles": [
                 {
                     "__class__": "Role",
-                    "target": "imperative",
-                    "type": "mood"
+                    "type": "mood",
+                    "target": "imperative"
                 },
                 {
                     "__class__": "Role",
+                    "type": "gs-route",
                     "target": {
                         "__class__": "Variable",
+                        "type": null,
                         "name": "x2",
                         "roles": [
                             {
                                 "__class__": "Role",
+                                "type": "gum-actee",
                                 "target": {
                                     "__class__": "Variable",
+                                    "type": "slm-Cup",
                                     "name": "w2",
                                     "roles": [
                                         {
                                             "__class__": "Role",
-                                            "target": "cup",
-                                            "type": "entity"
+                                            "type": "entity",
+                                            "target": "cup"
                                         },
                                         {
                                             "__class__": "Role",
-                                            "target": "the",
-                                            "type": "det"
+                                            "type": "det",
+                                            "target": "the"
                                         },
                                         {
                                             "__class__": "Role",
-                                            "target": "specific",
-                                            "type": "ident"
+                                            "type": "ident",
+                                            "target": "specific"
                                         },
                                         {
                                             "__class__": "Role",
-                                            "target": "singular",
-                                            "type": "quant"
+                                            "type": "quant",
+                                            "target": "singular"
                                         }
-                                    ],
-                                    "type": "slm-Cup"
-                                },
-                                "type": "gum-actee"
+                                    ]
+                                }
                             },
                             {
                                 "__class__": "Role",
+                                "type": "gum-processInConfiguration",
                                 "target": {
                                     "__class__": "Variable",
+                                    "type": "slm-Taking",
                                     "name": "w0",
                                     "roles": [
                                         {
                                             "__class__": "Role",
-                                            "target": "slm-Taking",
-                                            "type": "entity"
+                                            "type": "entity",
+                                            "target": "slm-Taking"
                                         }
-                                    ],
-                                    "type": "slm-Taking"
-                                },
-                                "type": "gum-processInConfiguration"
+                                    ]
+                                }
                             }
-                        ],
-                        "type": null
-                    },
-                    "type": "gs-route"
+                        ]
+                    }
                 }
-            ],
-            "type": "gs-AffectingDirectedMotion"
+            ]
         }
+    },
+    "graphs": {
+        "smain": "strict graph \"\" {\n\tnode [label=\"\\N\"];\n\tsubgraph cluster_x1 {\n\t\tgraph [fillcolor=lightskyblue,\n\t\t\tlabel=\"x1: gum-OrientationChange\",\n\t\t\tstyle=filled\n\t\t];\n\t\tsubgraph \"cluster_gs-direction\" {\n\t\t\tgraph [fillcolor=honeydew,\n\t\t\t\tlabel=\"gs-direction\",\n\t\t\t\tstyle=filled\n\t\t\t];\n\t\t\tsubgraph cluster_x2 {\n\t\t\t\tgraph [fillcolor=lightblue,\n\t\t\t\t\tlabel=\"x2: gs-GeneralizedLocation\",\n\t\t\t\t\tstyle=filled\n\t\t\t\t];\n\t\t\t\tsubgraph \"cluster_gs-hasSpatialModality\" {\n\t\t\t\t\tgraph [fillcolor=honeydew,\n\t\t\t\t\t\tlabel=\"gs-hasSpatialModality\",\n\t\t\t\t\t\tstyle=filled\n\t\t\t\t\t];\n\t\t\t\t\tsubgraph cluster_w2 {\n\t\t\t\t\t\tgraph [fillcolor=lightblue,\n\t\t\t\t\t\t\tlabel=\"w2: slm-Cup\",\n\t\t\t\t\t\t\tstyle=filled\n\t\t\t\t\t\t];\n\t\t\t\t\t\tw2\t\t\t\t\t\t [fillcolor=aliceblue,\n\t\t\t\t\t\t\tlabel=\"{&lt;entity&gt; cup|&lt;det&gt; the|&lt;ident&gt; specific|&lt;quant&gt; singular}\",\n\t\t\t\t\t\t\tshape=Mrecord,\n\t\t\t\t\t\t\tstyle=filled];\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tsubgraph \"cluster_gum-processInConfiguration\" {\n\t\t\tgraph [fillcolor=honeydew,\n\t\t\t\tlabel=\"gum-processInConfiguration\",\n\t\t\t\tstyle=filled\n\t\t\t];\n\t\t\tsubgraph cluster_w0 {\n\t\t\t\tgraph [fillcolor=lightblue,\n\t\t\t\t\tlabel=\"w0: slm-Moving\",\n\t\t\t\t\tstyle=filled\n\t\t\t\t];\n\t\t\t\tw0\t\t\t\t [fillcolor=aliceblue,\n\t\t\t\t\tlabel=\"{&lt;entity&gt; slm-Taking}\",\n\t\t\t\t\tshape=Mrecord,\n\t\t\t\t\tstyle=filled];\n\t\t\t}\n\t\t}\n\t\tx1\t\t [fillcolor=aliceblue,\n\t\t\tlabel=\"{&lt;mood&gt; imp}\",\n\t\t\tshape=Mrecord,\n\t\t\tstyle=filled];\n\t}\n}\n",
+        "smain/0": "strict graph \"\" {\n\tnode [label=\"\\N\"];\n\tsubgraph cluster_x1 {\n\t\tgraph [fillcolor=lightskyblue,\n\t\t\tlabel=\"x1: gum-OrientationChange\",\n\t\t\tstyle=filled\n\t\t];\n\t\tsubgraph \"cluster_gs-direction\" {\n\t\t\tgraph [fillcolor=honeydew,\n\t\t\t\tlabel=\"gs-direction\",\n\t\t\t\tstyle=filled\n\t\t\t];\n\t\t\tsubgraph cluster_x2 {\n\t\t\t\tgraph [fillcolor=lightblue,\n\t\t\t\t\tlabel=\"x2: gs-GeneralizedLocation\",\n\t\t\t\t\tstyle=filled\n\t\t\t\t];\n\t\t\t\tsubgraph \"cluster_gs-hasSpatialModality\" {\n\t\t\t\t\tgraph [fillcolor=honeydew,\n\t\t\t\t\t\tlabel=\"gs-hasSpatialModality\",\n\t\t\t\t\t\tstyle=filled\n\t\t\t\t\t];\n\t\t\t\t\tsubgraph cluster_w2 {\n\t\t\t\t\t\tgraph [fillcolor=lightblue,\n\t\t\t\t\t\t\tlabel=\"w2: slm-Cup\",\n\t\t\t\t\t\t\tstyle=filled\n\t\t\t\t\t\t];\n\t\t\t\t\t\tw2\t\t\t\t\t\t [fillcolor=aliceblue,\n\t\t\t\t\t\t\tlabel=\"{&lt;entity&gt; cup|&lt;det&gt; the|&lt;ident&gt; specific|&lt;quant&gt; singular}\",\n\t\t\t\t\t\t\tshape=Mrecord,\n\t\t\t\t\t\t\tstyle=filled];\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tsubgraph \"cluster_gum-processInConfiguration\" {\n\t\t\tgraph [fillcolor=honeydew,\n\t\t\t\tlabel=\"gum-processInConfiguration\",\n\t\t\t\tstyle=filled\n\t\t\t];\n\t\t\tsubgraph cluster_w0 {\n\t\t\t\tgraph [fillcolor=lightblue,\n\t\t\t\t\tlabel=\"w0: slm-Taking\",\n\t\t\t\t\tstyle=filled\n\t\t\t\t];\n\t\t\t\tw0\t\t\t\t [fillcolor=aliceblue,\n\t\t\t\t\tlabel=\"{&lt;entity&gt; slm-Taking}\",\n\t\t\t\t\tshape=Mrecord,\n\t\t\t\t\tstyle=filled];\n\t\t\t}\n\t\t}\n\t\tx1\t\t [fillcolor=aliceblue,\n\t\t\tlabel=\"{&lt;mood&gt; imp}\",\n\t\t\tshape=Mrecord,\n\t\t\tstyle=filled];\n\t}\n}\n",
+        "smain/.r": "strict graph \"\" {\n\tnode [label=\"\\N\"];\n\tsubgraph cluster_x1 {\n\t\tgraph [fillcolor=lightskyblue,\n\t\t\tlabel=\"x1: gs-AffectingDirectedMotion\",\n\t\t\tstyle=filled\n\t\t];\n\t\tsubgraph \"cluster_gs-route\" {\n\t\t\tgraph [fillcolor=honeydew,\n\t\t\t\tlabel=\"gs-route\",\n\t\t\t\tstyle=filled\n\t\t\t];\n\t\t\tsubgraph cluster_x2 {\n\t\t\t\tgraph [fillcolor=lightblue,\n\t\t\t\t\tlabel=None,\n\t\t\t\t\tstyle=filled\n\t\t\t\t];\n\t\t\t\tsubgraph \"cluster_gum-actee\" {\n\t\t\t\t\tgraph [fillcolor=honeydew,\n\t\t\t\t\t\tlabel=\"gum-actee\",\n\t\t\t\t\t\tstyle=filled\n\t\t\t\t\t];\n\t\t\t\t\tsubgraph cluster_w2 {\n\t\t\t\t\t\tgraph [fillcolor=lightblue,\n\t\t\t\t\t\t\tlabel=\"w2: slm-Cup\",\n\t\t\t\t\t\t\tstyle=filled\n\t\t\t\t\t\t];\n\t\t\t\t\t\tw2\t\t\t\t\t\t [fillcolor=aliceblue,\n\t\t\t\t\t\t\tlabel=\"{&lt;entity&gt; cup|&lt;det&gt; the|&lt;ident&gt; specific|&lt;quant&gt; singular}\",\n\t\t\t\t\t\t\tshape=Mrecord,\n\t\t\t\t\t\t\tstyle=filled];\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tsubgraph \"cluster_gum-processInConfiguration\" {\n\t\t\t\t\tgraph [fillcolor=honeydew,\n\t\t\t\t\t\tlabel=\"gum-processInConfiguration\",\n\t\t\t\t\t\tstyle=filled\n\t\t\t\t\t];\n\t\t\t\t\tsubgraph cluster_w0 {\n\t\t\t\t\t\tgraph [fillcolor=lightblue,\n\t\t\t\t\t\t\tlabel=\"w0: slm-Moving\",\n\t\t\t\t\t\t\tstyle=filled\n\t\t\t\t\t\t];\n\t\t\t\t\t\tw0\t\t\t\t\t\t [fillcolor=aliceblue,\n\t\t\t\t\t\t\tlabel=\"{&lt;entity&gt; slm-Taking}\",\n\t\t\t\t\t\t\tshape=Mrecord,\n\t\t\t\t\t\t\tstyle=filled];\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tx1\t\t [fillcolor=aliceblue,\n\t\t\tlabel=\"{&lt;mood&gt; imperative}\",\n\t\t\tshape=Mrecord,\n\t\t\tstyle=filled];\n\t}\n}\n",
+        "smain/.r/0": "strict graph \"\" {\n\tnode [label=\"\\N\"];\n\tsubgraph cluster_x1 {\n\t\tgraph [fillcolor=lightskyblue,\n\t\t\tlabel=\"x1: gs-AffectingDirectedMotion\",\n\t\t\tstyle=filled\n\t\t];\n\t\tsubgraph \"cluster_gs-route\" {\n\t\t\tgraph [fillcolor=honeydew,\n\t\t\t\tlabel=\"gs-route\",\n\t\t\t\tstyle=filled\n\t\t\t];\n\t\t\tsubgraph cluster_x2 {\n\t\t\t\tgraph [fillcolor=lightblue,\n\t\t\t\t\tlabel=None,\n\t\t\t\t\tstyle=filled\n\t\t\t\t];\n\t\t\t\tsubgraph \"cluster_gum-actee\" {\n\t\t\t\t\tgraph [fillcolor=honeydew,\n\t\t\t\t\t\tlabel=\"gum-actee\",\n\t\t\t\t\t\tstyle=filled\n\t\t\t\t\t];\n\t\t\t\t\tsubgraph cluster_w2 {\n\t\t\t\t\t\tgraph [fillcolor=lightblue,\n\t\t\t\t\t\t\tlabel=\"w2: slm-Cup\",\n\t\t\t\t\t\t\tstyle=filled\n\t\t\t\t\t\t];\n\t\t\t\t\t\tw2\t\t\t\t\t\t [fillcolor=aliceblue,\n\t\t\t\t\t\t\tlabel=\"{&lt;entity&gt; cup|&lt;det&gt; the|&lt;ident&gt; specific|&lt;quant&gt; singular}\",\n\t\t\t\t\t\t\tshape=Mrecord,\n\t\t\t\t\t\t\tstyle=filled];\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tsubgraph \"cluster_gum-processInConfiguration\" {\n\t\t\t\t\tgraph [fillcolor=honeydew,\n\t\t\t\t\t\tlabel=\"gum-processInConfiguration\",\n\t\t\t\t\t\tstyle=filled\n\t\t\t\t\t];\n\t\t\t\t\tsubgraph cluster_w0 {\n\t\t\t\t\t\tgraph [fillcolor=lightblue,\n\t\t\t\t\t\t\tlabel=\"w0: slm-Taking\",\n\t\t\t\t\t\t\tstyle=filled\n\t\t\t\t\t\t];\n\t\t\t\t\t\tw0\t\t\t\t\t\t [fillcolor=aliceblue,\n\t\t\t\t\t\t\tlabel=\"{&lt;entity&gt; slm-Taking}\",\n\t\t\t\t\t\t\tshape=Mrecord,\n\t\t\t\t\t\t\tstyle=filled];\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tx1\t\t [fillcolor=aliceblue,\n\t\t\tlabel=\"{&lt;mood&gt; imperative}\",\n\t\t\tshape=Mrecord,\n\t\t\tstyle=filled];\n\t}\n}\n"
     }
 }
 ```
+
+Example visualization (only smain shown):
+
+![Graphviz vizualization for "Take the cup." (smain).](docs/take-the-cup-graph-smain.png)
