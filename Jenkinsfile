@@ -25,7 +25,7 @@ pipeline {
 
         stage('deploy') {
             steps {
-                sh 'docker-compose -f docker-compose.deploy.yaml --project-name litmus up --detach --renew-anon-volumes --force-recreate'
+                sh 'docker-compose -f docker-compose.deploy.yml --project-name litmus up --detach --renew-anon-volumes --force-recreate'
             }
             when {
                 branch 'master'
