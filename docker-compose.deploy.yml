@@ -4,4 +4,4 @@ version: "3.2"
 services:
 
     openccg:
-        build: .
+        image: web-openccg:latest
