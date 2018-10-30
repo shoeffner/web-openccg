@@ -32,6 +32,8 @@ ADD https://github.com/mdaines/viz.js/releases/download/v2.0.0/viz.js \
     https://github.com/mdaines/viz.js/releases/download/v2.0.0/lite.render.js \
     /app/static/
 
+RUN chmod +r /app/static/viz.js /app/static/lite.render.js
+
 # Run Flask app behind nginx
 WORKDIR /app
 CMD uwsgi --http :8080 \
