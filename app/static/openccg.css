@@ -1,0 +1,21 @@
+pre .string {
+    color: forestgreen;
+}
+pre .number {
+    color: darkgoldenrod;
+}
+pre .boolean {
+    color: blue;
+}
+pre .null {
+    color: magenta;
+}
+pre .key {
+    color: maroon;
+}
+
+
+/* Overwrite settings of mini.css */
+#graphs {
+    max-height: 1000px;
+}

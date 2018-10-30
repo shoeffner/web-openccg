@@ -1,13 +1,14 @@
 import json
-import os
 import uuid
 
 from flask import Blueprint, Flask, render_template, request, redirect
 
+import graphs
 import wccg
 
 
-bp = Blueprint('openccg', __name__, template_folder='templates')
+bp = Blueprint('openccg', __name__,
+               template_folder='templates')
 
 
 def create_response(sentence):
@@ -29,6 +30,10 @@ def create_response(sentence):
         'uuid': str(uuid.uuid4())
     }
     response.update(content)
+    try:
+        response.update(graphs.create_graphs(content['json_parses']))
+    except KeyError:
+        pass
 
     return response
 
@@ -46,10 +51,13 @@ def parse():
     if request.method == 'GET':
         return json.dumps(dict(error="Use POST.", http_status=501)), 501
 
-    try:
-        key = next(request.values.keys())
-    except StopIteration:
-        key = None
+    if 'sentence' not in request.values:
+        try:
+            key = next(request.values.keys())
+        except StopIteration:
+            key = None
+    else:
+        key = 'sentence'
 
     # Get sentence from form field or use the first key.
     # The first key could be send e.g. by

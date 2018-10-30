@@ -2,71 +2,52 @@
 
 {% block head %}
     {{ super() }}
-    <!-- Script and style adapted from https://stackoverflow.com/a/7220510
-            written by user123444555621 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='openccg.css') }}" />
+    <script src="{{ url_for('static', filename='viz.js') }}"></script>
+    <script src="{{ url_for('static', filename='lite.render.js') }}"></script>
+    <script src="{{ url_for('static', filename='openccg.js') }}"></script>
     <script>
-        function syntaxHighlight(json) {
-            if (typeof json != 'string') {
-                json = JSON.stringify(json, undefined, 2);
-            }
-            // json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-                var cls = 'number';
-                if (/^"/.test(match)) {
-                    if (/:$/.test(match)) {
-                        cls = 'key';
-                    } else {
-                        cls = 'string';
-                    }
-                } else if (/true|false/.test(match)) {
-                    cls = 'boolean';
-                } else if (/null/.test(match)) {
-                    cls = 'null';
-                }
-                return '<span class="' + cls + '">' + match + '</span>';
-            });
+        function init() {
+            document.getElementById('sentenceform').addEventListener('submit', handle_submit);
         }
-
-        function init_syntax() {
-            var pre = document.getElementById('response');
-            pre.innerHTML = syntaxHighlight(pre.innerHTML);
-        }
-
-        window.onload = init_syntax;
+        window.addEventListener('load', init);
     </script>
-    <style>
-        pre {
-            outline: 1px solid #ccc;
-            padding: 5px;
-            margin: 5px;
-        }
-        .string {
-            color: forestgreen;
-        }
-        .number {
-            color: darkgoldenrod;
-        }
-        .boolean {
-            color: blue;
-        }
-        .null {
-            color: magenta;
-        }
-        .key {
-            color: maroon;
-        }
-    </style>
 {% endblock head %}
 
 {% block content %}
-<form action="{{ url_for('openccg.index') }}" method="POST">
-    <div class="input-group fluid">
-        <input type="text" name="sentence" value="{{ sentence or '' }}" placeholder="Take the cup off the table." />
-        <input type="submit" value="Go!" />
-    </div>
-</form>
+<div class="container">
+    <form action="{{ url_for('openccg.parse') }}" method="POST" id="sentenceform">
+        <fieldset>
+            <legend>Sentence</legend>
+            <div class="input-group fluid">
+                <input type="text" name="sentence" value="Take the cup off the table." placeholder="Take the cup off the table." />
+            </div>
+            <div class="input-group">
+                <label for="engine">Render engine</label>
+                <select id="engine" name="engine">
+                    <option value="svg">SVG</option>
+                    <option value="img" selected>Image</option>
+                    <option value="dot">Dot</option>
+                    <option value="json">JSON</option>
+                </select>
+                <input type="submit" value="Go!" />
+            </div>
+        </fieldset>
+    </form>
+</div>
 
-<pre id="response">
-{{ response or '' }}
-</pre>
+<div class="collapse">
+    <input type="checkbox" id="result-section1" aria-hidden="true" />
+    <label for="result-section1" aria-hidden="true">JSON response</label>
+    <div>
+        <pre id="response">
+        {{ response or '' }}
+        </pre>
+    </div>
+
+    <input type="checkbox" id="result-section2" checked aria-hidden="true" />
+    <label for="result-section2" aria-hidden="true">Graphs</label>
+    <div id="graphs" class="row">
+    </div>
+</div>
 {% endblock content %}
