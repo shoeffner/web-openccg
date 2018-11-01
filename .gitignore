@@ -1,6 +1,6 @@
 # Local files
-app/static/viz.js
-app/static/lite.render.js
+webopenccg/static/viz.js
+webopenccg/static/lite.render.js
 
 # Vim session
 *.vim

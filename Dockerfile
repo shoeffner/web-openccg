@@ -25,7 +25,7 @@ RUN curl -o openccg-0.9.5.tgz https://datapacket.dl.sourceforge.net/project/open
                     tatsu \
                     pygraphviz
 
-COPY app /app
+COPY webopenccg /app
 COPY tests /tests
 
 ADD https://github.com/mdaines/viz.js/releases/download/v2.0.0/viz.js \
@@ -34,11 +34,10 @@ ADD https://github.com/mdaines/viz.js/releases/download/v2.0.0/viz.js \
 
 RUN chmod +r /app/static/viz.js /app/static/lite.render.js
 
-# Run Flask app behind nginx
 WORKDIR /app
 CMD uwsgi --http :8080 \
           --uid www-data \
           --manage-script-name \
-          --module ccgapp \
+          --module webopenccg \
           --callable app \
           --master
