@@ -1,7 +1,11 @@
 import json
 import uuid
 
-from flask import Blueprint, Flask, render_template, request, redirect
+from flask import (Blueprint,
+                   Flask,
+                   redirect,
+                   render_template,
+                   request)
 
 import graphs
 import wccg
