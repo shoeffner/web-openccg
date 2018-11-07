@@ -1,6 +1,7 @@
 # Local files
 webopenccg/static/viz.js
 webopenccg/static/lite.render.js
+Pipfile.lock
 
 # Vim session
 *.vim
