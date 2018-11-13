@@ -1,7 +1,11 @@
-version: "3.2"
+version: "3.7"
 
 
 services:
 
     openccg:
         build: .
+        environment:
+            - DISPLAY=${IP}:0
+        volumes:
+            - /tmp/.X11-unix:/tmp/.X11-unix

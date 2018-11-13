@@ -19,11 +19,12 @@ RUN curl -o openccg-0.9.5.tgz https://datapacket.dl.sourceforge.net/project/open
     && unzip -d /english english.zip \
     && rm english.zip \
     && apt-get update \
-    && apt-get install -y python3 python3-pip graphviz libgraphviz-dev \
+    && apt-get install -y python3 python3-pip graphviz libgraphviz-dev python-tk \
     && pip3 install flask \
                     uwsgi \
                     tatsu \
-                    pygraphviz
+                    pygraphviz \
+    && (cd /openccg && ccg-build)
 
 COPY webopenccg /app
 COPY tests /tests
