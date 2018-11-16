@@ -5,6 +5,8 @@ services:
 
     openccg:
         build: .
+        ports:
+            - "80:8080"
         environment:
             - DISPLAY=${IP}:0
         volumes:
