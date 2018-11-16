@@ -1,5 +1,5 @@
 webopenccg/generated_openccg_parser.py: OpenCCG.ebnf
-	docker run --rm --detach --name web-openccg -v $$(pwd):/tmp web-openccg tatsu --generate-parser /tmp/$< --outfile /tmp/$@
+	docker run --rm --name web-openccg -v $$(pwd):/tmp web-openccg tatsu --generate-parser /tmp/$< --outfile /tmp/$@
 
 .PHONY: build
 build:
