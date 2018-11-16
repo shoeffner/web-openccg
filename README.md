@@ -141,12 +141,15 @@ for example to set up the service on Port 9043, you would change it to
 
 ## Development
 
-Although not necessarily needed, I use a pipenv for local development to be
-able to compile the grammar to a parser using TatSu.
-I rely on [when-changed](https://github.com/joh/when-changed) to trigger
-automatic builds:
+Before starting development, you need to build the docker container using:
 
-    when-changed OpenCCG.ebnf make
+    make build
+
+This step also includes some files downloaded during the build process into
+your local ./webopenccg/static directory.
+The copies are done because the development server mounts the directory, which
+overwrites the files which are only available inside the container but not on
+the host system.
 
 To start the development docker container, use the Makefile:
 
@@ -156,6 +159,10 @@ The development server binds to port 5000 and uses the
 [flask](http://flask.pocoo.org/) debug environment. Additionally, the docker
 container started with `make run` binds the app directory
 so that flask's reloading works properly.
+
+To compile the OpenCCG.ebnf grammar, run:
+
+    make
 
 
 ## Example response

@@ -2,6 +2,7 @@
 webopenccg/static/viz.js
 webopenccg/static/lite.render.js
 Pipfile.lock
+Pipfile
 
 # Vim session
 *.vim

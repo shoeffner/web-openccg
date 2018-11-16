@@ -11,7 +11,7 @@ build:
 
 .PHONY: run
 run:
-	docker run --rm -p 5000:5000 -v $$(pwd)/webopenccg:/app:ro web-openccg python3 /app/ccgapp.py
+	docker run --rm -p 5000:5000 -v $$(pwd)/webopenccg:/app:ro web-openccg python3 /app/webopenccg.py
 
 .PHONY: test
 test:
