@@ -7,15 +7,28 @@ You can find a live version at [litmus.informatik.uni-bremen.de/openccg](https:/
 
 After an initial `docker-compose up`, the service can be queried using a simple POST request, e.g. using curl:
 
-    $ curl --data "Take the cup." localhost/parse
+    $ curl --data "Take the cup." "localhost/openccg/parse?graphs"
     {"version": "2.2.0", "application": "web-openccg", "uuid": "3bafdaf8-cc9c-4fdf-b455-c9687babba49", "sentence": "take the cup", "parses": ..., "http_status": 200, "json_parses": ..., "graphs": ...}
 
-Or, as an example, using Python [requests](http://docs.python-requests.org/en/master/):
+The "graphs" field is only included if the `graphs` URL-parameter is present.
+
+As an example, using Python [requests](http://docs.python-requests.org/en/master/):
 
 ```python
 import requests
-print(requests.post('http://localhost/parse', data={'sentence': 'Take the cup.'}).json())
+
+# Without graphs
+print(requests.post('http://localhost/openccg/parse', data={'sentence': 'Take the cup.'}).json())
+
+# With graphs
+print(requests.post('http://localhost/openccg/parse',
+                    data={'sentence': 'Take the cup.'},
+                    params={'graphs': True}).json())
 ```
+
+Due to the way we host OpenCCG behind nginx at [litmus](https://litmus.informatik.uni-bremen.de/openccg), the URLs for web-openccg are all prefixed with "openccg".
+However, for the two important endpoints (`/` for the GUI and `/parse` for the API), there are redirects in place.
+For curl this means `curl -L --data "Take the cup." localhost/parse` will also work (note the `-L` (`--location`) argument).
 
 Note that is is not production ready, as it is really slow and not optimized:
 Instead of keeping one (or multiple) instances of OpenCCG running to query them faster, each request spawns an individual OpenCCG instance.
@@ -33,17 +46,17 @@ Instead of keeping one (or multiple) instances of OpenCCG running to query them 
 
 ### Querying
 
-To query the service visually, just open your browser at [http://localhost/](http://localhost/).
+To query the service visually, just open your browser at [http://localhost/openccg](http://localhost/).
 Otherwise, use curl, wget, or e.g. python requests to query web-openccg via the command line or your application.
 
 If your client allows to build your request body manually, like curl, just put the sentence inside:
 
-    curl --data "Take the cup." localhost/parse
+    curl --data "Take the cup." localhost/openccg/parse
 
 However, many high level frameworks like python requests usually use a
 key-value mechanism for post data. In this case, use the key `sentence`:
 
-    requests.post('http://localhost/parse', data={'sentence': 'Take the cup.'})
+    requests.post('http://localhost/openccg/parse', data={'sentence': 'Take the cup.'})
 
 For an example, see [below](#example-response).
 
