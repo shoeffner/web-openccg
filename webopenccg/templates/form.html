@@ -16,7 +16,7 @@
 
 {% block content %}
 <div class="container">
-    <form action="{{ url_for('openccg.parse') }}" method="POST" id="sentenceform">
+    <form action="{{ url_for('openccg.parse', graphs=true) }}" method="POST" id="sentenceform">
         <fieldset>
             <legend>Sentence</legend>
             <div class="input-group fluid">
