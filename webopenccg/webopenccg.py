@@ -31,7 +31,7 @@ def create_response(sentence, add_graphs=False):
     content = wccg.parse(sentence)
 
     response = {
-        'version': '2.2.0',
+        'version': '2.3.0',
         'application': 'web-openccg',
         'uuid': str(uuid.uuid4())
     }

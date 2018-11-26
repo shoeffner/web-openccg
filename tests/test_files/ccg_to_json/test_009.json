@@ -1,73 +1,75 @@
 {
     "ccg": "@x1:gs-AffectingDirectedMotion( <mood>imperative ^ <gs-route>x2 ^ <gum-actee>(w2:slm-Cup ^ cup ^ <det>the ^ <ident>specific ^ <quant>singular) ^ <gum-processInConfiguration>(w0:slm-Moving ^ slm-Taking))",
-    "json": {
-        "__class__": "Nominal",
-        "name": "x1",
-        "roles": [
-            {
-                "__class__": "Role",
-                "type": "mood",
-                "target": "imperative"
-            },
-            {
-                "__class__": "Role",
-                "type": "gs-route",
-                "target": {
-                    "__class__": "Variable",
-                    "name": "x2",
-                    "type": null,
-                    "roles": [
-                        {
-                            "__class__": "Role",
-                            "type": "gum-actee",
-                            "target": {
-                                "__class__": "Variable",
-                                "name": "w2",
-                                "roles": [
-                                    {
-                                        "__class__": "Role",
-                                        "type": "entity",
-                                        "target": "cup"
-                                    },
-                                    {
-                                        "__class__": "Role",
-                                        "type": "det",
-                                        "target": "the"
-                                    },
-                                    {
-                                        "__class__": "Role",
-                                        "type": "ident",
-                                        "target": "specific"
-                                    },
-                                    {
-                                        "__class__": "Role",
-                                        "type": "quant",
-                                        "target": "singular"
-                                    }
-                                ],
-                                "type": "slm-Cup"
+    "json": [
+        {
+            "__class__": "Nominal",
+            "name": "x1",
+            "roles": [
+                {
+                    "__class__": "Role",
+                    "type": "mood",
+                    "target": "imperative"
+                },
+                {
+                    "__class__": "Role",
+                    "type": "gs-route",
+                    "target": {
+                        "__class__": "Variable",
+                        "name": "x2",
+                        "type": null,
+                        "roles": [
+                            {
+                                "__class__": "Role",
+                                "type": "gum-actee",
+                                "target": {
+                                    "__class__": "Variable",
+                                    "name": "w2",
+                                    "roles": [
+                                        {
+                                            "__class__": "Role",
+                                            "type": "entity",
+                                            "target": "cup"
+                                        },
+                                        {
+                                            "__class__": "Role",
+                                            "type": "det",
+                                            "target": "the"
+                                        },
+                                        {
+                                            "__class__": "Role",
+                                            "type": "ident",
+                                            "target": "specific"
+                                        },
+                                        {
+                                            "__class__": "Role",
+                                            "type": "quant",
+                                            "target": "singular"
+                                        }
+                                    ],
+                                    "type": "slm-Cup"
+                                }
+                            },
+                            {
+                                "__class__": "Role",
+                                "type": "gum-processInConfiguration",
+                                "target": {
+                                    "__class__": "Variable",
+                                    "name": "w0",
+                                    "roles": [
+                                        {
+                                            "__class__": "Role",
+                                            "type": "entity",
+                                            "target": "slm-Taking"
+                                        }
+                                    ],
+                                    "type": "slm-Moving"
+                                }
                             }
-                        },
-                        {
-                            "__class__": "Role",
-                            "type": "gum-processInConfiguration",
-                            "target": {
-                                "__class__": "Variable",
-                                "name": "w0",
-                                "roles": [
-                                    {
-                                        "__class__": "Role",
-                                        "type": "entity",
-                                        "target": "slm-Taking"
-                                    }
-                                ],
-                                "type": "slm-Moving"
-                            }
-                        }
-                    ]
+                        ]
+                    }
                 }
-            }
-        ],
-        "type": "gs-AffectingDirectedMotion"
-    }
+            ],
+            "type": "gs-AffectingDirectedMotion"
+        }
+    ]
 }
