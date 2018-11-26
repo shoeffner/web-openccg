@@ -75,7 +75,7 @@ If a sentence was provided during the request, these fields are present:
 
 If at least one successful parse exists, the these fields are included:
 - `parses`: A dictionary of parse-identifiers (e.g. "np") to actual parses as OpenCCG outputs them.
-- `json_parses`: A version of the OpenCCG outputs in a flat JSON. This is produced via a custom grammar for [TatSu](https://github.com/neogeny/TatSu). For details see [below](#json-format)
+- `json_parses`: A version of the OpenCCG outputs in a flat JSON. This is produced via a custom grammar for [TatSu](https://github.com/neogeny/TatSu). For details see [below](#json-format). Each individual dictionary value is a list of Nominals, Variables, and/or Roles.
 - `graphs`: A dictionary of parse-identifiers to dot-strings. They can be rendered using graphviz -- the [online GUI](https://litmus.informatik.uni-bremen.de/openccg) renders these automatically.
 
 *Note:* The keys are shared between `parses`, `json_parses`, and `graphs`, thus you can easily lookup the original output for a JSON parse and vice-versa.
@@ -86,7 +86,7 @@ If an error occurs, the error field is present:
 
 ### JSON format
 
-Current version: 2.1.0
+Current version: 2.3.0
 
 The JSON format for the OpenCCG parses can be determined from the example above
 or by carefully inspecting the fully typed
@@ -94,9 +94,10 @@ or by carefully inspecting the fully typed
 
 There are three different types of objects: Nominal, Variable, and Role. The full
 semantic specification (the JSON file) can either be one single entity of any of the
-three types or a list of Nominals. If we find parses which are lists of
-variables or roles, the grammar will be extended. Please open an issue if you
-find sentences which can not be parsed correctly.
+three types or a list of Nominals.
+If we find parses which are lists of variables or roles, the grammar will be
+extended. Please open an issue if you find sentences which can not be parsed
+correctly.
 
 
 #### Nominal and Variable

@@ -6,9 +6,9 @@ start
 
 semspec
     = term
-    | nominal
-    | variable
-    | role
+    | { nominal }+
+    | { variable }+
+    | { role }+
     ;
 
 term

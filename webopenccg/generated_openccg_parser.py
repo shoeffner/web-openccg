@@ -90,11 +90,20 @@ class OpenCCGParser(Parser):
             with self._option():
                 self._term_()
             with self._option():
-                self._nominal_()
+
+                def block0():
+                    self._nominal_()
+                self._positive_closure(block0)
             with self._option():
-                self._variable_()
+
+                def block1():
+                    self._variable_()
+                self._positive_closure(block1)
             with self._option():
-                self._role_()
+
+                def block2():
+                    self._role_()
+                self._positive_closure(block2)
             self._error('no available options')
 
     @tatsumasu()
