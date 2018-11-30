@@ -6,7 +6,7 @@ import subprocess
 from tatsu.util import asjson
 from tatsu.model import ModelBuilderSemantics
 
-from generated_openccg_parser import OpenCCGParser
+from webopenccg.generated_openccg_parser import OpenCCGParser
 
 
 def parse(sentence):
