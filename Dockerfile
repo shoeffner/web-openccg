@@ -20,8 +20,8 @@ RUN curl -o openccg-0.9.5.tgz https://datapacket.dl.sourceforge.net/project/open
     && rm english.zip \
 # Download viz.js
     && mkdir -p /app/webopenccg/static \
-    && curl -o /app/webopenccg/static/viz.js https://github.com/mdaines/viz.js/releases/download/v2.0.0/viz.js \
-    && curl -o /app/webopenccg/static/viz.js https://github.com/mdaines/viz.js/releases/download/v2.0.0/lite.render.js \
+    && curl -L -o /app/webopenccg/static/viz.js https://github.com/mdaines/viz.js/releases/download/v2.0.0/viz.js \
+    && curl -L -o /app/webopenccg/static/viz.js https://github.com/mdaines/viz.js/releases/download/v2.0.0/lite.render.js \
 # Install libraries etc.
     && apt-get update \
     && apt-get install -y python3 python3-pip graphviz libgraphviz-dev python-tk \
