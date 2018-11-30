@@ -1,15 +1,10 @@
 import json
+import os
 import unittest
 
 from pathlib import Path
 
-# Shortcut to discover files inside the app instead of making it an installable
-# package.
-import os
-os.sys.path.append(Path(__file__).parent / '..' / 'app')
-
-
-import wccg  # noqa
+from webopenccg import wccg
 
 
 class CCGtoJSONTestCase(unittest.TestCase):

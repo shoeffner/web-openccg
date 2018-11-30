@@ -8,8 +8,8 @@ from flask import (Blueprint,
                    request,
                    url_for)
 
-import graphs
-import wccg
+from webopenccg import graphs
+from webopenccg import wccg
 
 
 bp = Blueprint('openccg', __name__,
