@@ -1,110 +1,130 @@
 import pygraphviz as pgv
 
 
-nominal_style = {
-    'style': 'filled',
-    'fillcolor': 'lightskyblue'
-}
-
-variable_style = {
-    'style': 'filled',
-    'fillcolor': 'lightblue',
-}
-
-relation_style = {
-    'style': 'filled',
-    'fillcolor': 'honeydew'
-}
-
-property_style = {
-    'style': 'filled',
-    'fillcolor': 'aliceblue'
-}
-
-
-def role_string(role):
-    return f"&lt;{role['type']}&gt; {role['target']}"
-
-
-def relation_string(role):
-    return f"{role['type']}"
-
-
-def variable_string(variable):
-    if variable['type']:
-        return f"{variable['name']}: {variable['type']}"
-    else:
-        variable['name']
-
-
-def handle_nominal(tree, graph):
-    """Placeholder, currently nominals are handled just like variables."""
-    handle_variable(tree, graph)
-    graph.get_subgraph(f"cluster_{tree['name']}").graph_attr.update(nominal_style)
-
-
-def handle_variable(tree, graph):
-    graph.add_node(tree['name'], shape='Mrecord',
-                   label=variable_string(tree),
-                   **property_style)
-    sg = graph.add_subgraph(tree['name'],
-                            name=f"cluster_{tree['name']}",
-                            label=variable_string(tree),
-                            **variable_style)
-
-    attributes = []
-    for role in tree['roles']:
-        if isinstance(role['target'], str):
-            attributes.append(role_string(role))
-        elif isinstance(role['target'], dict):
-            sg.add_node(role['type'], label=relation_string(role))
-            role_sg = sg.add_subgraph(role['type'],
-                                      name=f"cluster_{role['type']}",
-                                      label=relation_string(role),
-                                      **relation_style)
-
-            handle_variable(role['target'], role_sg)
-
-            while role_sg is not None:
-                role_sg.delete_node(role['type'])
-                role_sg = role_sg.subgraph_parent()
-
-    if attributes:
-        label = '|'.join(a for a in attributes if isinstance(a, str))
-        graph.get_node(tree['name']).attr['label'] = '{' + label + '}'
-    else:
-        while sg is not None:
-            sg.delete_node(tree['name'])
-            sg = sg.subgraph_parent()
-        if not len(tree['roles']):
-            graph.add_node(tree['name'], shape='box',
-                           label=variable_string(tree),
-                           **variable_style)
-
-
-def handle_role(tree, graph):
-    if isinstance(tree['target'], str):
-        # Property
-        graph.add_node(tree['target'], shape='Mrecord',
-                       label=('{' + role_string(tree) + '}'),
-                       **property_style)
-    if isinstance(tree['target'], dict):
-        # Relation
-        graph.add_node(tree['name'], shape='Mrecord',
-                       **relation_style)
-
-
-def walk(tree, graph):
-    handle = {
-        'Nominal': handle_nominal,
-        'Variable': handle_variable,
-        'Role': handle_role
+class GraphGenerator:
+    nominal_style = {
+        'style': 'filled',
+        'fillcolor': 'lightskyblue'
     }
-    if isinstance(tree, dict):
-        handle[tree['__class__']](tree, graph)
-    if isinstance(tree, list):
-        for elem in tree:
-            handle[elem['__class__']](elem, graph)
+
+    variable_style = {
+        'style': 'filled',
+        'fillcolor': 'lightblue',
+    }
+
+    relation_style = {
+        'style': 'filled',
+        'fillcolor': 'honeydew'
+    }
+
+    property_style = {
+        'style': 'filled',
+        'fillcolor': 'aliceblue'
+    }
+
+    variable_colors = [
+        '#ff0000',
+        '#00ff00',
+        '#0000ff'
+    ]
+
+    def __init__(self):
+        self.nodes = {}
+        self.variables = {}
+
+    def get(self, parse):
+        graph = pgv.AGraph()
+
+        self.walk(parse, graph)
+
+        return str(graph)
+
+    def role_string(self, role):
+        return f"&lt;{role['type']}&gt; {role['target']}"
+
+    def relation_string(self, role):
+        return f"{role['type']}"
+
+    def variable_string(self, variable):
+        if variable['type'] is not None:
+            return f"{variable['name']}: {variable['type']}"
+        else:
+            return variable['name']
+
+    def handle_nominal(self, tree, graph):
+        """Placeholder, currently nominals are handled just like variables."""
+        self.handle_variable(tree, graph)
+        graph.get_subgraph(f"cluster_{tree['name']}").graph_attr.update(GraphGenerator.nominal_style)
+
+    def handle_variable(self, tree, graph):
+        name = tree['name']
+        while name in self.nodes:
+            name += '_'
+        if name.rstrip('_') in self.variables:
+            self.variables[name.rstrip('_')].append(name)
+        else:
+            self.variables[name] = [name]
+
+        graph.add_node(name, shape='Mrecord',
+                       label=self.variable_string(tree),
+                       **GraphGenerator.property_style)
+        sg = graph.add_subgraph(name,
+                                name=f"cluster_{tree['name']}",
+                                label=self.variable_string(tree),
+                                **GraphGenerator.variable_style)
+        self.nodes[name] = sg
+
+        attributes = []
+        for role in tree['roles']:
+            if isinstance(role['target'], str):
+                attributes.append(self.role_string(role))
+            elif isinstance(role['target'], dict):
+                sg.add_node(role['type'], label=self.relation_string(role))
+                role_sg = sg.add_subgraph(role['type'],
+                                          name=f"cluster_{role['type']}",
+                                          label=self.relation_string(role),
+                                          **GraphGenerator.relation_style)
+
+                self.handle_variable(role['target'], role_sg)
+
+                while role_sg is not None:
+                    role_sg.delete_node(role['type'])
+                    role_sg = role_sg.subgraph_parent()
+
+        if attributes:
+            label = '|'.join(a for a in attributes if isinstance(a, str))
+            graph.get_node(name).attr['label'] = '{' + label + '}'
+        else:
+            while sg is not None:
+                sg.delete_node(name)
+                sg = sg.subgraph_parent()
+            if not len(tree['roles']):
+                graph.add_node(name, shape='box',
+                               label=self.variable_string(tree),
+                               **GraphGenerator.variable_style)
+
+    def handle_role(self, tree, graph):
+        if isinstance(tree['target'], str):
+            # Property
+            graph.add_node(tree['target'], shape='Mrecord',
+                           label=('{' + self.role_string(tree) + '}'),
+                           **GraphGenerator.property_style)
+        if isinstance(tree['target'], dict):
+            # Relation
+            graph.add_node(tree['name'], shape='Mrecord',
+                           **GraphGenerator.relation_style)
+
+    def walk(self, tree, graph):
+        handle = {
+            'Nominal': self.handle_nominal,
+            'Variable': self.handle_variable,
+            'Role': self.handle_role
+        }
+        if isinstance(tree, dict):
+            handle[tree['__class__']](tree, graph)
+        if isinstance(tree, list):
+            for elem in tree:
+                handle[elem['__class__']](elem, graph)
 
 
 def create_graph(parse):
@@ -113,11 +133,7 @@ def create_graph(parse):
     Args:
         parse: The JSON representation of the semantic specification.
     """
-    graph = pgv.AGraph()
-
-    walk(parse, graph)
-
-    return str(graph)
+    return GraphGenerator().get(parse)
 
 
 def create_graphs(json_parses):
