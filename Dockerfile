@@ -35,7 +35,7 @@ COPY setup.py requirements.txt README.md /app/
 COPY webopenccg /app/webopenccg/
 COPY tests /tests
 
-RUN pip3 install /app
+RUN pip3 install -e /app
 
 CMD uwsgi --http :8080 \
           --uid www-data \
