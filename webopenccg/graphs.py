@@ -1,4 +1,5 @@
 import pygraphviz as pgv
+from itertools import cycle
 
 
 class GraphGenerator:
@@ -23,9 +24,12 @@ class GraphGenerator:
     }
 
     variable_colors = [
-        '#ff0000',
-        '#00ff00',
-        '#0000ff'
+        '#8b008b',  # darkmagenta
+        '#ff7f50',  # coral
+        '#dc143c',  # crimson
+        '#ffd700',  # gold
+        '#ff1493',  # deeppink
+        '#adff2f',  # greenyellow
     ]
 
     def __init__(self):
@@ -36,8 +40,40 @@ class GraphGenerator:
         graph = pgv.AGraph()
 
         self.walk(parse, graph)
+        self.color_same_variables(graph)
 
         return str(graph)
+
+    def color_same_variables(self, graph):
+        default_style = {'color': 'black', 'penwidth': 1.0}
+
+        colors = cycle(GraphGenerator.variable_colors)
+        for name, alternatives in self.variables.items():
+            if len(alternatives) == 1:
+                continue
+
+            style = {'color': next(colors), 'penwidth': 4.0}
+            for alternative in alternatives:
+                sg = self.find_subgraph(graph, f'cluster_{alternative}')
+                if sg is None:
+                    continue
+                sg.graph_attr.update(**style)
+                parent = sg.subgraph_parent()
+                if parent is not None and parent.has_node(alternative):
+                    node = parent.get_node(alternative)
+                    if not node.attr['label'].startswith('{'):
+                        node.attr.update(**style)
+                for ssg in sg.subgraphs_iter():
+                    if ssg.graph_attr['color'] == '':
+                        ssg.graph_attr.update(**default_style)
+
+    def find_subgraph(self, graph, subgraph_name):
+        for sg in graph.subgraphs_iter():
+            if sg.name == subgraph_name:
+                return sg
+            found = self.find_subgraph(sg, subgraph_name)
+            if found is not None:
+                return found
 
     def role_string(self, role):
         return f"&lt;{role['type']}&gt; {role['target']}"
@@ -53,10 +89,9 @@ class GraphGenerator:
 
     def handle_nominal(self, tree, graph):
         """Placeholder, currently nominals are handled just like variables."""
-        self.handle_variable(tree, graph)
-        graph.get_subgraph(f"cluster_{tree['name']}").graph_attr.update(GraphGenerator.nominal_style)
+        self.handle_variable(tree, graph, GraphGenerator.nominal_style)
 
-    def handle_variable(self, tree, graph):
+    def handle_variable(self, tree, graph, style=None):
         name = tree['name']
         while name in self.nodes:
             name += '_'
@@ -68,10 +103,12 @@ class GraphGenerator:
         graph.add_node(name, shape='Mrecord',
                        label=self.variable_string(tree),
                        **GraphGenerator.property_style)
+        if style is None:
+            style = GraphGenerator.variable_style
         sg = graph.add_subgraph(name,
-                                name=f"cluster_{tree['name']}",
+                                name=f"cluster_{name}",
                                 label=self.variable_string(tree),
-                                **GraphGenerator.variable_style)
+                                **style)
         self.nodes[name] = sg
 
         attributes = []
