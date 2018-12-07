@@ -4,6 +4,9 @@ LABEL maintainer="Sebastian Höffner <shoeffner@tzi.de>"
 LABEL description="A small webapp to parse sentences using the DiaSpace grammar (University of Bremen) with OpenCCG."
 LABEL version="2.1"
 
+ARG GRAMMAR_VERSION=master
+ARG OPENCCG_VERSION=0.9.5
+
 EXPOSE 5000 8080
 
 ENV OPENCCG_HOME /openccg
@@ -11,13 +14,15 @@ ENV PATH "$OPENCCG_HOME/bin:$PATH"
 ENV LD_LIBRARY_PATH "$OPENCCG_HOME/lib:$LD_LIBRARY_PATH"
 
 # Download and extract OpenCCG
-RUN curl -o openccg-0.9.5.tgz https://datapacket.dl.sourceforge.net/project/openccg/openccg/openccg%20v0.9.5%20-%20deplen%2C%20kenlm%2C%20disjunctivizer/openccg-0.9.5.tgz \
-    && tar zxf openccg-0.9.5.tgz \
-    && rm openccg-0.9.5.tgz \
+RUN curl -o openccg-${OPENCCG_VERSION}.tgz https://datapacket.dl.sourceforge.net/project/openccg/openccg/openccg%20v${OPENCCG_VERSION}%20-%20deplen%2C%20kenlm%2C%20disjunctivizer/openccg-${OPENCCG_VERSION}.tgz \
+    && tar zxf openccg-${OPENCCG_VERSION}.tgz \
+    && rm openccg-${OPENCCG_VERSION}.tgz \
 # Download and extract grammar
-    && curl -O http://www.diaspace.uni-bremen.de/twiki/pub/DiaSpace/ReSources/english.zip \
-    && unzip -d /english english.zip \
-    && rm english.zip \
+    && curl -O -L https://github.com/shoeffner/openccg-gum-cooking/archive/${GRAMMAR_VERSION}.zip \
+    && unzip -d /tmp ${GRAMMAR_VERSION}.zip \
+    && mv /tmp/openccg-gum-cooking-${GRAMMAR_VERSION}/english-cooking /grammar \
+    && rm ${GRAMMAR_VERSION}.zip \
+    && rm -rf /tmp/openccg-gum-cooking-${GRAMMAR_VERSION} \
 # Download viz.js
     && mkdir -p /app/webopenccg/static \
     && curl -L -o /app/webopenccg/static/viz.js https://github.com/mdaines/viz.js/releases/download/v2.0.0/viz.js \

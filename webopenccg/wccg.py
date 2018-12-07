@@ -1,4 +1,5 @@
 import itertools
+import os
 import re
 import string
 import subprocess
@@ -25,7 +26,7 @@ def parse(sentence):
     if not sentence:
         return dict(error='No sentence provided.', http_status=400)
 
-    wccg_proc = subprocess.Popen(['wccg', '-showsem', '-showall', '/english'],
+    wccg_proc = subprocess.Popen(['wccg', '-showsem', '-showall', os.environ.get('GRAMMAR_DIR', '/grammar')],
                                  stdin=subprocess.PIPE,
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.DEVNULL,
