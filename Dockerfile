@@ -18,11 +18,11 @@ RUN curl -o openccg-${OPENCCG_VERSION}.tgz https://datapacket.dl.sourceforge.net
     && tar zxf openccg-${OPENCCG_VERSION}.tgz \
     && rm openccg-${OPENCCG_VERSION}.tgz \
 # Download and extract grammar
-    && curl -O -L https://github.com/shoeffner/openccg-gum-cooking/archive/${GRAMMAR_VERSION}.zip \
-    && unzip -d /tmp ${GRAMMAR_VERSION}.zip \
-    && mv /tmp/openccg-gum-cooking-${GRAMMAR_VERSION}/english-cooking /grammar \
-    && rm ${GRAMMAR_VERSION}.zip \
-    && rm -rf /tmp/openccg-gum-cooking-${GRAMMAR_VERSION} \
+    && curl -o grammar.zip -L https://github.com/shoeffner/openccg-gum-cooking/archive/${GRAMMAR_VERSION}.zip \
+    && unzip -d /tmp grammar.zip \
+    && mv /tmp/openccg-gum-cooking-*/english-cooking /grammar \
+    && rm grammar.zip \
+    && rm -rf /tmp/openccg-gum-cooking-* \
 # Download viz.js
     && mkdir -p /app/webopenccg/static \
     && curl -L -o /app/webopenccg/static/viz.js https://github.com/mdaines/viz.js/releases/download/v2.0.0/viz.js \

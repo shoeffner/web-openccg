@@ -5,7 +5,7 @@ webopenccg/generated_openccg_parser.py: OpenCCG.ebnf
 
 .PHONY: build
 build:
-	docker build . -t web-openccg
+	docker build . --build-arg GRAMMAR_VERSION=legacy/grammar -t web-openccg
 
 webopenccg/static/%.js:
 	docker run --rm --detach --name web-openccg-build-$(notdir $@) web-openccg

@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh 'docker build . --no-cache -t web-openccg:$(git rev-parse --short HEAD)'
+                sh 'docker build . --no-cache --build-arg GRAMMAR_VERSION=legacy/grammar -t web-openccg:$(git rev-parse --short HEAD)'
             }
         }
 
