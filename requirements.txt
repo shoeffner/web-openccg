@@ -2,3 +2,4 @@ requests
 tatsu
 pygraphviz
 flask
+pexpect

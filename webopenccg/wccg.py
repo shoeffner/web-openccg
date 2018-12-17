@@ -1,13 +1,56 @@
 import itertools
+import multiprocessing
 import os
 import re
 import string
-import subprocess
+import time
+
+from pexpect.replwrap import REPLWrapper, PEXPECT_PROMPT
 
 from tatsu.util import asjson
 from tatsu.model import ModelBuilderSemantics
 
 from webopenccg.generated_openccg_parser import OpenCCGParser
+
+
+class WCCGProcess:
+    """Holds a wccg process to be reused."""
+
+    def __init__(self):
+        self.mutex = multiprocessing.Lock()
+        self._new_repl()
+
+    def _new_repl(self):
+        self.repl = REPLWrapper(f'wccg -prompt {PEXPECT_PROMPT} -showsem -showall {os.environ.get("GRAMMAR_DIR", "/grammar")}', PEXPECT_PROMPT, None)
+
+    def parse(self, sentence):
+        """Parse a sentence by passing it to the wccg process and read the results.
+        This is thread-safe, so multiple processes can try to access the process.
+        """
+        with self.mutex:
+            return self.repl.run_command(sentence)
+
+
+class WCCGPool:
+    def __init__(self, pool_size=3):
+        self.mutex = multiprocessing.Lock()
+        self.processes = [WCCGProcess()]
+        self.current_idx = 0
+        self.pool_size = pool_size
+
+        self.last_activity = 0
+        self.activity_threshold = 3
+
+    def __next__(self):
+        # TODO(@shoeffner): The pool currently never shrinks back
+        with self.mutex:
+            now = time.time()
+            if now - self.last_activity < self.activity_threshold and len(self.processes) < self.pool_size:
+                self.processes.append(WCCGProcess())
+            self.last_activity = now
+
+            self.current_idx = (self.current_idx + 1) % len(self.processes)
+            return self.processes[self.current_idx]
 
 
 def parse(sentence):
@@ -26,13 +69,11 @@ def parse(sentence):
     if not sentence:
         return dict(error='No sentence provided.', http_status=400)
 
-    wccg_proc = subprocess.Popen(['wccg', '-showsem', '-showall', os.environ.get('GRAMMAR_DIR', '/grammar')],
-                                 stdin=subprocess.PIPE,
-                                 stdout=subprocess.PIPE,
-                                 stderr=subprocess.DEVNULL,
-                                 universal_newlines=True)
     sentence = re.sub(f'[{re.escape(string.punctuation)}]', '', sentence).lower()
-    response = wccg_proc.communicate(input=sentence)[0]
+
+    if not hasattr(parse, 'pool'):
+        parse.pool = WCCGPool(int(os.environ.get('WCCG_POOL_SIZE', 3)))
+    response = next(parse.pool).parse(sentence)
 
     wccg_response = _as_dict(response or f'"{sentence}": Unable to parse. wccg returned an empty response.')
     wccg_response = jsonify_parses(wccg_response)

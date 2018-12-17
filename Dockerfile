@@ -34,6 +34,8 @@ RUN curl -o openccg-${OPENCCG_VERSION}.tgz https://datapacket.dl.sourceforge.net
                     uwsgi \
                     tatsu \
                     pygraphviz \
+                    pexpect \
+# Build OpenCCG
     && (cd /openccg && ccg-build)
 
 COPY setup.py requirements.txt README.md /app/
