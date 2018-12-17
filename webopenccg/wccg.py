@@ -21,7 +21,7 @@ class WCCGProcess:
         self._new_repl()
 
     def _new_repl(self):
-        self.repl = REPLWrapper(f'wccg -prompt {PEXPECT_PROMPT} -showsem -showall {os.environ.get("GRAMMAR_DIR", "/grammar")}', PEXPECT_PROMPT, None)
+        self.repl = REPLWrapper(f'wccg -prompt {PEXPECT_PROMPT} -showsem -showall {os.environ.get("GRAMMAR_DIR", "/grammar")}', PEXPECT_PROMPT + ' ', None)
 
     def parse(self, sentence):
         """Parse a sentence by passing it to the wccg process and read the results.
