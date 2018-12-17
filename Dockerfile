@@ -5,18 +5,28 @@ LABEL description="A small webapp to parse sentences using the DiaSpace grammar 
 LABEL version="2.1"
 
 ARG GRAMMAR_VERSION=master
-ARG OPENCCG_VERSION=0.9.5
+ARG OPENCCG_LIB_VERSION=0.9.5
+ARG OPENCCG_REPOSITORY=https://github.com/OpenCCG/openccg
+ARG OPENCCG_VERSION=master
+ARG WCCG_POOL_SIZE=3
 
 EXPOSE 5000 8080
 
 ENV OPENCCG_HOME /openccg
-ENV PATH "$OPENCCG_HOME/bin:$PATH"
-ENV LD_LIBRARY_PATH "$OPENCCG_HOME/lib:$LD_LIBRARY_PATH"
+ENV PATH "${OPENCCG_HOME}/bin:$PATH"
+ENV LD_LIBRARY_PATH "${OPENCCG_HOME}/lib:${LD_LIBRARY_PATH}"
+ENV WCCG_POOL_SIZE=${WCCG_POOL_SIZE}
 
-# Download and extract OpenCCG
-RUN curl -o openccg-${OPENCCG_VERSION}.tgz https://datapacket.dl.sourceforge.net/project/openccg/openccg/openccg%20v${OPENCCG_VERSION}%20-%20deplen%2C%20kenlm%2C%20disjunctivizer/openccg-${OPENCCG_VERSION}.tgz \
-    && tar zxf openccg-${OPENCCG_VERSION}.tgz \
-    && rm openccg-${OPENCCG_VERSION}.tgz \
+# Download and extract OpenCCG -- first for libraries, then the requested source-code version
+RUN curl -o openccg-${OPENCCG_LIB_VERSION}.tgz https://datapacket.dl.sourceforge.net/project/openccg/openccg/openccg%20v${OPENCCG_LIB_VERSION}%20-%20deplen%2C%20kenlm%2C%20disjunctivizer/openccg-${OPENCCG_LIB_VERSION}.tgz \
+    && tar zxf openccg-${OPENCCG_LIB_VERSION}.tgz \
+    && rm openccg-${OPENCCG_LIB_VERSION}.tgz \
+# Source code overwrites
+    && curl -o openccg.zip -L ${OPENCCG_REPOSITORY}/archive/${OPENCCG_VERSION}.zip \
+    && unzip openccg.zip \
+    && rm openccg.zip \
+    && cp -r openccg-*/* /openccg/ \
+    && rm -r openccg-* \
 # Download and extract grammar
     && curl -o grammar.zip -L https://github.com/shoeffner/openccg-gum-cooking/archive/${GRAMMAR_VERSION}.zip \
     && unzip -d /tmp grammar.zip \
