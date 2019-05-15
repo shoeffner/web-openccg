@@ -1,8 +1,8 @@
-FROM openjdk:11-jdk
+FROM openjdk:11-jdk-slim
 
 LABEL maintainer="Sebastian Höffner <shoeffner@tzi.de>"
 LABEL description="A small webapp to parse sentences using the DiaSpace grammar (University of Bremen) with OpenCCG."
-LABEL version="2.1"
+LABEL version="2.2"
 
 ARG GRAMMAR_VERSION=master
 ARG OPENCCG_LIB_VERSION=0.9.5
@@ -12,13 +12,23 @@ ARG WCCG_POOL_SIZE=3
 
 EXPOSE 5000 8080
 
-ENV OPENCCG_HOME /openccg
-ENV PATH "${OPENCCG_HOME}/bin:$PATH"
-ENV LD_LIBRARY_PATH "${OPENCCG_HOME}/lib:${LD_LIBRARY_PATH}"
-ENV WCCG_POOL_SIZE=${WCCG_POOL_SIZE}
+ENV OPENCCG_HOME=/openccg
+ENV PATH="${OPENCCG_HOME}/bin:$PATH" \
+    LD_LIBRARY_PATH="${OPENCCG_HOME}/lib:/usr/local/lib:${LD_LIBRARY_PATH}" \
+    LDFLAGS="-L/usr/local/lib/python3.7/config-3.7m-x86_64-linux-gnu" \
+    WCCG_POOL_SIZE=${WCCG_POOL_SIZE}
 
+# Install libraries etc.
+RUN apt-get update \
+    && apt-get install -y \
+        build-essential \
+        curl \
+        graphviz \
+        libgraphviz-dev \
+        python \
+    && apt-get clean \
 # Download and extract OpenCCG -- first for libraries, then the requested source-code version
-RUN curl -o openccg-${OPENCCG_LIB_VERSION}.tgz https://datapacket.dl.sourceforge.net/project/openccg/openccg/openccg%20v${OPENCCG_LIB_VERSION}%20-%20deplen%2C%20kenlm%2C%20disjunctivizer/openccg-${OPENCCG_LIB_VERSION}.tgz \
+    && curl -o openccg-${OPENCCG_LIB_VERSION}.tgz https://datapacket.dl.sourceforge.net/project/openccg/openccg/openccg%20v${OPENCCG_LIB_VERSION}%20-%20deplen%2C%20kenlm%2C%20disjunctivizer/openccg-${OPENCCG_LIB_VERSION}.tgz \
     && tar zxf openccg-${OPENCCG_LIB_VERSION}.tgz \
     && rm openccg-${OPENCCG_LIB_VERSION}.tgz \
 # Source code overwrites
@@ -37,22 +47,40 @@ RUN curl -o openccg-${OPENCCG_LIB_VERSION}.tgz https://datapacket.dl.sourceforge
     && mkdir -p /app/webopenccg/static \
     && curl -L -o /app/webopenccg/static/viz.js https://github.com/mdaines/viz.js/releases/download/v2.0.0/viz.js \
     && curl -L -o /app/webopenccg/static/lite.render.js https://github.com/mdaines/viz.js/releases/download/v2.0.0/lite.render.js \
-# Install libraries etc.
-    && apt-get update \
-    && apt-get install -y python3 python3-pip graphviz libgraphviz-dev python-tk \
-    && pip3 install flask \
-                    uwsgi \
-                    tatsu \
-                    pygraphviz \
-                    pexpect \
 # Build OpenCCG
     && (cd /openccg && ccg-build)
+
+# "Install" Python 3, replacing Python 2
+COPY --from=python:3.7-slim \
+     /usr/local/bin/python \
+     /usr/local/bin/python3 \
+     /usr/local/bin/python3.7 \
+     /usr/local/bin/pip \
+     /usr/local/bin/pip3 \
+     /usr/local/bin/pip3.7 \
+     /usr/local/bin/
+COPY --from=python:3.7-slim \
+     /usr/local/include/python3.7m \
+     /usr/local/include/python3.7m
+COPY --from=python:3.7-slim \
+     /usr/local/lib/libpython3.7m.so.1.0 \
+     /usr/local/lib/
+COPY --from=python:3.7-slim \
+     /usr/local/lib/python3.7 \
+     /usr/local/lib/python3.7
+ENV PYTHONHOME=/usr/local
 
 COPY setup.py requirements.txt README.md /app/
 COPY webopenccg /app/webopenccg/
 COPY tests /tests
 
-RUN pip3 install -e /app
+# Install app dependencies
+RUN pip3 install flask \
+                 uwsgi \
+                 tatsu \
+                 pygraphviz \
+                 pexpect \
+    && pip3 install -e /app
 
 CMD uwsgi --http :8080 \
           --uid www-data \
