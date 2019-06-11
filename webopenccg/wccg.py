@@ -127,8 +127,8 @@ def _as_dict(response):
         sentence, error = response.split(':', 1)
         error = ' '.join(l.strip() for l in error.splitlines()).strip()
         return dict(sentence=sentence[1:-1], error=error, http_status=422)
-    sentence, num_parses = lines[0].split(':')
-    num_parses = int(num_parses.split()[0])
+    sentence, *num_parses = lines[0].split(':')
+    num_parses = int(num_parses[0].split()[0]) if num_parses else 0
 
     parses = {}
     key = None
