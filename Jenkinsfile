@@ -19,7 +19,7 @@ pipeline {
                 sh 'docker tag web-openccg:$(git rev-parse --short HEAD) web-openccg:latest'
             }
             when {
-                branch 'origin/master'
+                branch 'master'
             }
         }
 
@@ -28,7 +28,7 @@ pipeline {
                 sh 'docker-compose -f docker-compose.deploy.yml --project-name litmus up --detach --renew-anon-volumes --force-recreate'
             }
             when {
-                branch 'origin/master'
+                branch 'master'
             }
         }
     }
