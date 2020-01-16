@@ -28,7 +28,7 @@ RUN apt-get update \
         python \
     && apt-get clean \
 # Download and extract OpenCCG -- first for libraries, then the requested source-code version
-    && curl -o openccg-${OPENCCG_LIB_VERSION}.tgz https://datapacket.dl.sourceforge.net/project/openccg/openccg/openccg%20v${OPENCCG_LIB_VERSION}%20-%20deplen%2C%20kenlm%2C%20disjunctivizer/openccg-${OPENCCG_LIB_VERSION}.tgz \
+    && curl -o openccg-${OPENCCG_LIB_VERSION}.tgz https://iweb.dl.sourceforge.net/project/openccg/openccg/openccg%20v${OPENCCG_LIB_VERSION}%20-%20deplen%2C%20kenlm%2C%20disjunctivizer/openccg-${OPENCCG_LIB_VERSION}.tgz \
     && tar zxf openccg-${OPENCCG_LIB_VERSION}.tgz \
     && rm openccg-${OPENCCG_LIB_VERSION}.tgz \
 # Source code overwrites
