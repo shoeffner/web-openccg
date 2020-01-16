@@ -77,11 +77,7 @@ COPY webopenccg /app/webopenccg/
 COPY tests /tests
 
 # Install app dependencies
-RUN pip3 install flask \
-                 uwsgi \
-                 tatsu \
-                 pygraphviz \
-                 pexpect \
+RUN pip3 install -r /app/requirements.txt \
     && pip3 install -e /app
 
 CMD uwsgi --http :8080 \

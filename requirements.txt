@@ -1,5 +1,5 @@
 requests
-tatsu
+tatsu>=4.4.0
 pygraphviz
 flask
 pexpect
