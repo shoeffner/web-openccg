@@ -16,7 +16,7 @@ pipeline {
 
         stage('retag') {
             when {
-                branch 'ref/heads/master'
+                branch 'origin/master'
             }
             steps {
                 sh 'docker tag web-openccg:$(git rev-parse --short HEAD) web-openccg:latest'
@@ -25,7 +25,7 @@ pipeline {
 
         stage('deploy') {
             when {
-                branch 'ref/heads/master'
+                branch 'origin/master'
             }
             steps {
                 sh 'docker-compose -f docker-compose.deploy.yml --project-name litmus up --detach --renew-anon-volumes --force-recreate'
