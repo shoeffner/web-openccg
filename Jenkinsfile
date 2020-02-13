@@ -16,7 +16,10 @@ pipeline {
 
         stage('retag') {
             when {
-                branch 'origin/master'
+                expression {
+                    return env.GIT_BRANCH == "origin/master"
+                }
+                // branch 'master'
             }
             steps {
                 sh 'docker tag web-openccg:$(git rev-parse --short HEAD) web-openccg:latest'
@@ -25,7 +28,10 @@ pipeline {
 
         stage('deploy') {
             when {
-                branch 'origin/master'
+                expression {
+                    return env.GIT_BRANCH == "origin/master"
+                }
+                // branch 'master'
             }
             steps {
                 sh 'docker-compose -f docker-compose.deploy.yml --project-name litmus up --detach --renew-anon-volumes --force-recreate'
